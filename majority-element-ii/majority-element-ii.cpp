@@ -8,12 +8,9 @@ public:
         unordered_map<int,int> counter;
         vector<int> res;
         for(int n:nums){
-            if(counter[n] == -1)
-                continue;
             counter[n]++;
-            if(counter[n] >= targetCount){
+            if(counter[n] == targetCount){
                 res.push_back(n);
-                counter[n] = -1;
             }
         }
         return res;
