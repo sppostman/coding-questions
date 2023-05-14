@@ -1,6 +1,9 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
+        // Naive - O(n^2) for each element, travel ahead and count
+        // Better - Hash map of counts o(n) time & space
+        // Optimal - Moore - O(n)
         int n=nums.size();
         int el=-1;
         int count=0;
