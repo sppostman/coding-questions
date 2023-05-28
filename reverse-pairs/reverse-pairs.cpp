@@ -9,7 +9,7 @@ public:
         for(i=l; i<mid; i++){
             while(j<=r && nums[i] > 2LL * (long)nums[j])
                 j++;
-            count += (j-mid);
+            count += j-mid;
         }
 
         i=l,j=mid;
