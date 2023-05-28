@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
+        // Optimal - Extended Boyer Moore’s Voting Algorithm (O(n))
         int n= nums.size();
         int targetCount = n/3 + 1;
 
@@ -11,15 +12,15 @@ public:
                 c1++;
             else if(n==el2)
                 c2++;
-            else if(c1 == 0 && n != el2){
+            else if(c1 == 0){
                 c1=1;
                 el1=n;
             }
-            else if(c2 == 0 && n != el1){
+            else if(c2 == 0){
                 c2=1;
                 el2=n;
             }
-            else if(n != el1){
+            else {
                 c1--;
                 c2--;
             }
