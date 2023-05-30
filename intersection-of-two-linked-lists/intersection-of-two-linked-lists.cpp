@@ -9,7 +9,7 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        // Better
+        // Optimal
         ListNode *t1 = headA, *t2 = headB;
         while(t1 != t2){
             t1 = t1 ? t1->next : headB;
@@ -19,6 +19,7 @@ public:
 
 
 
+        // Better
         ListNode *x=headA, *y=headB;
         int m=0,n=0;
         while(x && y){
