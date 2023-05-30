@@ -9,6 +9,31 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        // Better
+        ListNode *t1 = headA, *t2 = headB;
+        bool b1=false,b2=false;
+        while(true){
+            if(t1==t2)
+                return t1;
+            t1 = t1->next;
+            t2 = t2->next;
+            if(!t1){
+                if(b1)
+                    return NULL;
+                t1 = headB;
+                b1=true;
+            }
+            if(!t2){
+                if(b2)
+                    return NULL;
+                t2 = headA;
+                b2=true;
+            }
+        }
+        return NULL;
+
+
+
         ListNode *x=headA, *y=headB;
         int m=0,n=0;
         while(x && y){
