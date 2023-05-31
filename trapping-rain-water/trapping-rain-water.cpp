@@ -47,7 +47,7 @@ public:
         // return trapped;
 
 
-        // // Only suffixMax: Time - O(3N),  Space - O(2N), 
+        // // Only suffixMax: Time - O(2N),  Space - O(N), 
         vector<int> suffixMax(n);
 
         suffixMax[n-1] = height[n-1];
@@ -59,7 +59,7 @@ public:
         int leftMax=0;
         for(int i=0; i<n; i++){
             leftMax = max(leftMax, height[i]);
-            
+
             // Find capacity at that point based on walls
             tmp = min(leftMax, suffixMax[i]);
 
