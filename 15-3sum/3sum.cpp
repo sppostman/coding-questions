@@ -3,6 +3,7 @@ class Solution
     public:
         vector<vector < int>> threeSum(vector<int> &a)
         {
+            // Sort-O(N) + for every el, traverse remaining - O(N^2)
             int n = a.size();
             vector<vector < int>> result;
             sort(a.begin(), a.end());
@@ -10,7 +11,7 @@ class Solution
             int l,r;
             for(int i=0; i<n; i++){
                 if(i>0 && a[i]==a[i-1])    continue;
-                
+
                 l=i+1;
                 r=n-1;
                 int required = -a[i];
@@ -31,32 +32,6 @@ class Solution
                 }
             }
             return result;
-
-            // for every element, 2 pointers - O(n^2)
-            // for (int i = 0; i < n; i++){
-            //     if(i!=0 && a[i-1]==a[i])    continue;   // Skip duplicate i
-            //     l = i+1;
-            //     h=n-1;
-            //     while(l<h){
-            //         if(a[l]+a[h]+a[i] == 0){
-            //             result.push_back({a[l],a[h],a[i]});
-            //             do {
-            //                 l++;
-            //             } while(l<h && a[l-1] == a[l]);
-            //             do {
-            //                 h--;
-            //             } while(h>l && a[h+1] == a[h]);
-            //         }
-            //         else if(a[l]+a[h]+a[i] < 0)
-            //             l++;
-            //         else
-            //             h--;
-            //     }
-            // }
-
-
-            // return result;
-
 
 
             // Hashmap, O(n^2), O(n+m) (m for no. of unique triplets)
