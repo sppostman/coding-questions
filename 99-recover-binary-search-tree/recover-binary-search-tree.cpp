@@ -23,11 +23,31 @@ public:
         root->val=arr[i++];
         preRectify(root->right, arr, i);
     }
+    
+    TreeNode *f=NULL, *s=NULL;
+    TreeNode *prev=NULL;
     void recoverTree(TreeNode* root) {
-        vector<int> arr;
-        pre(root,arr);
-        sort(arr.begin(), arr.end());
-        int i=0;
-        preRectify(root, arr, i);
+        // vector<int> arr;
+        // pre(root,arr);
+        // sort(arr.begin(), arr.end());
+        // int i=0;
+        // preRectify(root, arr, i);
+
+        f=NULL;
+        s=NULL;
+        prev=NULL;
+        preRectOpt(root);
+        swap(f->val,s->val);
+    }
+    void preRectOpt(TreeNode *root){
+        if(root == NULL)    return;
+        preRectOpt(root->left);
+        if(prev!=NULL && root->val < prev->val){
+            if(f==NULL)
+                f=prev;
+            s=root;
+        }
+        prev=root;
+        preRectOpt(root->right);
     }
 };
