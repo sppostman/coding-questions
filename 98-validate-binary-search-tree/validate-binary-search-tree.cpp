@@ -11,20 +11,35 @@
  */
 class Solution {
 public:
-    bool isvalid(TreeNode* root, long lb, long ub){
+    // bool isvalid(TreeNode* root, long lb, long ub){
+    //     if(!root)
+    //         return true;
+    //     if(root->val >= ub || root->val <= lb){
+    //         return false;
+    //     }
+    //     return isvalid(root->left, lb, root->val) &&
+    //         isvalid(root->right, root->val, ub);
+    // }
+
+    bool isvalid(TreeNode* root, TreeNode* &prev){
         if(!root)
             return true;
-        if(root->val >= ub || root->val <= lb){
+
+        if(!isvalid(root->left, prev))
             return false;
-        }
-        return isvalid(root->left, lb, root->val) &&
-            isvalid(root->right, root->val, ub);
+
+        if(prev && prev->val >= root->val)
+            return false;
+        prev = root;
+        
+        return isvalid(root->right, prev);
     }
     bool isValidBST(TreeNode* root) {
         if(!root)
             return true;
-        return isvalid(root, LONG_MIN, LONG_MAX);
-        // return isvalid(root->left, LONG_MIN, root->val) &&
-        //     isvalid(root->right, root->val, LONG_MAX);
+        // return isvalid(root, LONG_MIN, LONG_MAX);
+        
+        TreeNode* prev = NULL;
+        return isvalid(root, prev);
     }
 };
