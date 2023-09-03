@@ -28,12 +28,12 @@ public:
         }
 
         curr.push_back(nums[n]);
-        subsets(nums, n-1, curr, result, taken);
+        subsetsSorted(nums, n-1, curr, result, taken);
         curr.pop_back();
 
-        while(n-1>0 && nums[n]==nums[n-1])
+        while(n-1>-1 && nums[n]==nums[n-1])
             n--;
-        subsets(nums, n-1, curr, result, taken);
+        subsetsSorted(nums, n-1, curr, result, taken);
     }
 
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
