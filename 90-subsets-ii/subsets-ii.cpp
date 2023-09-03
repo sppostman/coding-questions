@@ -19,7 +19,7 @@ public:
     }
 
     void subsetsSorted(
-        vector<int>& nums, int n, vector<int> curr,
+        vector<int>& nums, int n, vector<int> &curr,
         vector<vector<int>> &result, set<vector<int>> &taken
     ){
         if(n<0){
