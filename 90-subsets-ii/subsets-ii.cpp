@@ -24,10 +24,10 @@ public:
     ){
         if(n<0){
             // sort(curr.begin(), curr.end());
-            if(!taken.count(curr)){
+            // if(!taken.count(curr)){
                 result.push_back(curr);
-                taken.insert(curr);
-            }
+                // taken.insert(curr);
+            // }
             return;
         }
 
