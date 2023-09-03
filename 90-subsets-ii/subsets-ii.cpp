@@ -23,19 +23,16 @@ public:
         vector<vector<int>> &result, set<vector<int>> &taken
     ){
         if(n<0){
-            // sort(curr.begin(), curr.end());
-            // if(!taken.count(curr)){
-                result.push_back(curr);
-                // taken.insert(curr);
-            // }
+            result.push_back(curr);
             return;
         }
 
-        // while(n>0 && nums[n]==nums[n-1])
-        //     n--;
-        subsets(nums, n-1, curr, result, taken);
-
         curr.push_back(nums[n]);
+        subsets(nums, n-1, curr, result, taken);
+        curr.pop_back();
+
+        while(n-1>0 && nums[n]==nums[n-1])
+            n--;
         subsets(nums, n-1, curr, result, taken);
     }
 
