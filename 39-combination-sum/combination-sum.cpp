@@ -7,10 +7,8 @@ public:
             result.push_back(curr);
             return;
         }
-        // printf("Without %d\n", candidates[idx]);
         combine(candidates, curr, idx-1, target, result);
 
-        // printf("With %d\n", candidates[idx]);
         if(target >= candidates[idx]){
             curr.push_back(candidates[idx]);
             combine(candidates, curr, idx, target-candidates[idx], result);
