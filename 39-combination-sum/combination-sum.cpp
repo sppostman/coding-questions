@@ -1,7 +1,7 @@
 class Solution {
 public:
     void combine(vector<int>& candidates, vector<int> &curr, int idx, int target, vector<vector<int>> &result){
-        if(idx<0)
+        if(idx<0 || target<0)
             return;
         if(target==0){
             result.push_back(curr);
