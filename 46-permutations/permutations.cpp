@@ -19,24 +19,44 @@ public:
     //     }
     // }
 
-    void perm2(
+    // void perm2(
+    //     vector<int>& nums, vector<int> &curr,
+    //     vector<bool> &taken, vector<vector<int>> &result
+    // ){
+    //     if(curr.size() == nums.size()){
+    //         result.push_back(curr);
+    //         return;
+    //     }
+    //     for(int i=0;i<nums.size();i++){
+    //         if(!taken[i]){
+    //             taken[i] = true;
+    //             curr.push_back(nums[i]);
+    //             perm2(nums, curr, taken, result);
+    //             curr.pop_back();
+    //             taken[i] = false;
+    //         }
+    //     }
+    // }
+
+    void perm3(
         vector<int>& nums, vector<int> &curr,
-        vector<bool> &taken, vector<vector<int>> &result
+        int idx, vector<vector<int>> &result
     ){
+        // if(idx == nums.size()){
         if(curr.size() == nums.size()){
             result.push_back(curr);
             return;
         }
-        for(int i=0;i<nums.size();i++){
-            if(!taken[i]){
-                taken[i] = true;
-                curr.push_back(nums[i]);
-                perm2(nums, curr, taken, result);
-                curr.pop_back();
-                taken[i] = false;
-            }
+        
+        for(int i=idx;i<nums.size();i++){
+            swap(nums[idx], nums[i]);
+            curr.push_back(nums[idx]);
+            perm3(nums, curr, idx+1, result);
+            curr.pop_back();
+            swap(nums[idx], nums[i]);
         }
     }
+
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> result;
         vector<int> curr;
@@ -44,9 +64,10 @@ public:
         // set<int> taken;
         // perm(nums, curr, taken, result);
         
-        vector<bool> taken(nums.size());
-        perm2(nums, curr, taken, result);
+        // vector<bool> taken(nums.size());
+        // perm2(nums, curr, taken, result);
         
+        perm3(nums, curr, 0, result);
         return result;
     }
 };
