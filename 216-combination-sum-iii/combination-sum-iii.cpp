@@ -5,7 +5,6 @@ public:
         vector<int> &curr, vector<vector<int>> &result
     ){
         if(curr.size() == k){
-            printf("Size %d, sum %d\n", curr.size(), target);
             if(target == 0){
                 result.push_back(curr);
             }
