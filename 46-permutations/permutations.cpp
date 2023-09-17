@@ -4,7 +4,7 @@ public:
     //     vector<int>& nums, vector<int> &curr,
     //     set<int> &taken, vector<vector<int>> &result
     // ){
-    //     if(taken.size() == nums.size()){
+    //     if(curr.size() == nums.size()){
     //         result.push_back(curr);
     //         return;
     //     }
