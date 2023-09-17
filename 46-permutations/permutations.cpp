@@ -42,8 +42,8 @@ public:
         vector<int>& nums, vector<int> &curr,
         int idx, vector<vector<int>> &result
     ){
-        // if(idx == nums.size()){
-        if(curr.size() == nums.size()){
+        if(idx == nums.size()){
+        // if(curr.size() == nums.size()){
             result.push_back(curr);
             return;
         }
