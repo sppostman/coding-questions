@@ -24,6 +24,10 @@ typedef struct Node {
             children[idx] = new Node();
         return children[idx];
     }
+
+    void setEnd(){
+        ends = true;
+    }
 } Node;
 
 class Trie {
@@ -44,7 +48,7 @@ public:
             node = node->addChildIfNotExists(ch);
         }
 
-        node->ends = true;
+        node->setEnd();
     }
     
     bool search(string word) {
@@ -57,7 +61,7 @@ public:
             node = node->getChar(ch);
         }
 
-        return node != NULL && node->ends;
+        return node->ends;
     }
     
     bool startsWith(string prefix) {
@@ -70,7 +74,7 @@ public:
             node = node->getChar(ch);
         }
 
-        return node != NULL;
+        return true;
     }
 };
 
