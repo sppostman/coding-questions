@@ -1,33 +1,47 @@
 typedef struct Node {
     Node* children[26];
     bool ends;
+
+    Node(){
+        for(int i=0; i<26; i++)
+            this->children[i] = NULL;
+        this->ends = false;
+    }
+
+    bool hasChar(char ch){
+        int idx = ch - 'a';
+        return children[idx] != NULL;
+    }
+
+    Node* getChar(char ch){
+        int idx = ch - 'a';
+        return children[idx];
+    }
+
+    Node* addChildIfNotExists(char ch){
+        int idx = ch - 'a';
+        if(!children[idx])
+            children[idx] = new Node();
+        return children[idx];
+    }
 } Node;
 
 class Trie {
 private:
-    Node* newNode(){
-        Node* newer = new Node();
-        for(int i=0; i<26; i++)
-            newer->children[i] = NULL;
-        newer -> ends = false;
-        return newer;
-    }
-
-public:
     Node* root;
 
+public:
+
     Trie() {
-        root = newNode();
+        root = new Node();
     }
     
     void insert(string word) {
         Node *node = root;
 
         for(int i=0; i<word.size(); i++){
-            char ch = word[i] - 'a';
-            if(! node->children[ch] )
-                node->children[ch] = newNode();
-            node = node->children[ch];
+            char ch = word[i];
+            node = node->addChildIfNotExists(ch);
         }
 
         node->ends = true;
@@ -37,10 +51,10 @@ public:
         Node *node = root;
         
         for(int i=0; i<word.size(); i++){
-            char ch = word[i] - 'a';
-            if(! node->children[ch] )
+            char ch = word[i];
+            if(! node->hasChar(ch) )
                 return false;
-            node = node->children[ch];
+            node = node->getChar(ch);
         }
 
         return node != NULL && node->ends;
@@ -50,10 +64,10 @@ public:
         Node *node = root;
         
         for(int i=0; i<prefix.size(); i++){
-            char ch = prefix[i] - 'a';
-            if(! node->children[ch] )
+            char ch = prefix[i];
+            if(! node->hasChar(ch) )
                 return false;
-            node = node->children[ch];
+            node = node->getChar(ch);
         }
 
         return node != NULL;
