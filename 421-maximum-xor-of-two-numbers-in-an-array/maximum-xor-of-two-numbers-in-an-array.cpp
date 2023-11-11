@@ -35,13 +35,13 @@ class Trie {
             Node *node = root;
             int best = 0;
             for(int i=31; i>=0; i--){
-                int desired = !((x >> i) & 1);
+                int desired = 1-((x >> i) & 1);
                 if(node->hasBit(desired)){
                     node = node->getBit(desired);
                     best |= desired << i;
                 } else {
-                    node = node->getBit(!desired);
-                    best |= !(desired) << i;
+                    node = node->getBit(1-desired);
+                    best |= 1-desired << i;
                 }
             }
             return best;
