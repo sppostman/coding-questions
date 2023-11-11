@@ -31,6 +31,21 @@ class Trie {
                 node = node->addIfNotExists((num >> i) & 1);
             }
         }
+        int getXor(int x){
+            Node *node = root;
+            int best = 0;
+
+            for(int i=31; i>=0; i--){
+                int desired = 1-(x >> i & 1);
+                if(node->hasBit(desired)){
+                    node = node->getBit(desired);
+                    best |= 1 << i;
+                } else {
+                    node = node->getBit(1-desired);
+                }
+            }
+            return best;
+        }
         int getXorCandidate(int x){
             Node *node = root;
             int best = 0;
@@ -61,8 +76,9 @@ public:
 
         int mx = 0;
         for(int n : nums){
+            mx = max(mx, trie.getXor(n));
             // printf("%d ^ %d\n", n, n^trie.getXorCandidate(n));
-            mx = max(mx, n^trie.getXorCandidate(n));
+            // mx = max(mx, n^trie.getXorCandidate(n));
         }
         return mx;
 
