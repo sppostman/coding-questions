@@ -1,10 +1,12 @@
 typedef struct Node {
-    Node *left;
-    Node *right;
+    private:
     int key;
     int value;
-
+    
     public:
+    Node *left;
+    Node *right;
+
     Node(int key, int value){
         left=NULL;
         right=NULL;
@@ -12,6 +14,12 @@ typedef struct Node {
         this->value = value;
     }
 
+    int getKey(){
+        return this->key;
+    }
+    int getValue(){
+        return this->value;
+    }
     void updateValue(int value){
         this->value = value;
     }
@@ -40,6 +48,8 @@ class DLL {
     Node* detachNode(Node *node){
         node->left->right = node->right;
         node->right->left = node->left;
+        node->left = NULL;
+        node->right = NULL;
         return node;
     }
 
@@ -48,10 +58,10 @@ class DLL {
         delete node;
     }
 
-
     void removeLastNode(){
-        if(tail->left != head){
-            removeNode(tail->left);
+        Node *lastNode = getLastNode();
+        if(lastNode){
+            removeNode(lastNode);
         }
     }
 
@@ -73,10 +83,10 @@ private:
     void removeLeastRecent(){
         Node* lastNode = ordered.getLastNode();
         if(lastNode){
-            cached.erase(lastNode->key);
+            // printf("Remove %d \n", lastNode->getKey());
+            cached.erase(lastNode->getKey());
             ordered.removeLastNode();
         }
-        // printf("Remove %d \n", removedKey);
     }
 
     Node* use(int key){
@@ -97,8 +107,8 @@ public:
     
     int get(int key) {
         if(cached.find(key) != cached.end()){
-            use(key);
-            return cached[key]->value;
+            Node *existingNode = use(key);
+            return existingNode->getValue();
         }
         return -1;
     }
