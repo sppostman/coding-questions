@@ -38,22 +38,37 @@ public:
     //     }
     // }
 
-    void perm3(
-        vector<int>& nums, vector<int> &curr,
-        int idx, vector<vector<int>> &result
-    ){
-        if(idx == nums.size()){
-        // if(curr.size() == nums.size()){
+    // void perm3(
+    //     vector<int>& nums, vector<int> &curr,
+    //     int idx, vector<vector<int>> &result
+    // ){
+    //     if(idx == nums.size()){
+    //     // if(curr.size() == nums.size()){
+    //         result.push_back(curr);
+    //         return;
+    //     }
+        
+    //     for(int i=idx;i<nums.size();i++){
+    //         swap(nums[idx], nums[i]);
+    //         curr.push_back(nums[idx]);
+    //         perm3(nums, curr, idx+1, result);
+    //         curr.pop_back();
+    //         swap(nums[idx], nums[i]);
+    //     }
+    // }
+
+    void p3(vector<int> &nums, vector<int> &curr, int i, vector<vector<int>> &result){
+        if(i == nums.size()){
             result.push_back(curr);
             return;
         }
-        
-        for(int i=idx;i<nums.size();i++){
-            swap(nums[idx], nums[i]);
-            curr.push_back(nums[idx]);
-            perm3(nums, curr, idx+1, result);
+
+        for(int nxt=i; nxt<nums.size(); nxt++){
+            curr.push_back(nums[nxt]);
+            swap(nums[nxt], nums[i]);
+            p3(nums, curr, i+1, result);
+            swap(nums[nxt], nums[i]);
             curr.pop_back();
-            swap(nums[idx], nums[i]);
         }
     }
 
@@ -67,7 +82,8 @@ public:
         // vector<bool> taken(nums.size());
         // perm2(nums, curr, taken, result);
         
-        perm3(nums, curr, 0, result);
+        // perm3(nums, curr, 0, result);
+        p3(nums, curr, 0, result);
         return result;
     }
 };
