@@ -4,6 +4,7 @@ typedef struct Node {
     int key;
     int value;
 
+    public:
     Node(int key, int value){
         left=NULL;
         right=NULL;
@@ -16,57 +17,82 @@ typedef struct Node {
     }
 } Node;
 
+class DLL {
+    Node *head;
+    Node *tail;
+
+    public:
+    DLL(){
+        head = new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head->right = tail;
+        tail->left = head;
+    }
+
+    Node* getFirstNode(){
+        return head->right != tail ? head->right : NULL;
+    }
+
+    Node* getLastNode(){
+        return tail->left != head ? tail->left : NULL;
+    }
+
+    Node* detachNode(Node *node){
+        node->left->right = node->right;
+        node->right->left = node->left;
+        return node;
+    }
+
+    void removeNode(Node *node){
+        detachNode(node);
+        delete node;
+    }
+
+
+    void removeLastNode(){
+        if(tail->left != head){
+            removeNode(tail->left);
+        }
+    }
+
+    void addNodeToBeginning(Node *node){
+        node->right = head->right;
+        node->left = head;
+        head->right->left = node;
+        head->right = node;
+    }
+};
+
+
 class LRUCache {
 private:
     unordered_map<int, Node*> cached;
-    Node *mostRecent;
-    Node *leastRecent;
+    DLL ordered;
     int capacity;
 
     void removeLeastRecent(){
-        Node *target = leastRecent;
-        if(target->left)
-            target->left->right = NULL;
-        leastRecent = target->left;
-        cached.erase(target->key);
-        printf("Cleanup %d (%d), size: %lu \n",target->key,target->value,cached.size());
-        // free(target);
+        Node* lastNode = ordered.getLastNode();
+        if(lastNode){
+            cached.erase(lastNode->key);
+            ordered.removeLastNode();
+        }
+        // printf("Remove %d \n", removedKey);
     }
 
-    void use(int key){
-        printf("Use %d \n", key);
+    Node* use(int key){
+        if(cached.find(key) == cached.end())
+            return NULL;
+
+        // printf("Use %d \n", key);
         Node* targetNode = cached[key];
-
-        if(mostRecent == targetNode){
-            return;
-        }
-
-        if(targetNode->left){
-            targetNode->left->right = targetNode->right;
-        }
-        if(targetNode->right){
-            targetNode->right->left = targetNode->left;
-        }
-        if(targetNode == leastRecent){
-            leastRecent = targetNode->left;
-        }
-
-        targetNode->left = NULL;
-        targetNode->right = mostRecent;
-        // mostRecent->left = targetNode;
-
-        if(mostRecent)
-            mostRecent->left = targetNode;
-        if(!leastRecent)
-            leastRecent = targetNode;
-        mostRecent = targetNode;
+        ordered.detachNode(targetNode);
+        ordered.addNodeToBeginning(targetNode);
+        return targetNode;
     }
 
 public:
     LRUCache(int capacity) {
         this->capacity=capacity;
-        mostRecent = NULL;
-        leastRecent = NULL;
     }
     
     int get(int key) {
@@ -78,23 +104,16 @@ public:
     }
     
     void put(int key, int value) {
-        Node* targetNode;
-
         if(cached.find(key) == cached.end()){
-            printf("Put %d (Size: %lu)\n", key, cached.size()+1);
-            targetNode = new Node(key, value);
-            cached[key] = targetNode;
-            if(!leastRecent)
-                leastRecent = targetNode;
+            Node *newNode = new Node(key, value);
+            ordered.addNodeToBeginning(newNode);
+            cached[key] = newNode;
+            if(cached.size() > capacity)
+                removeLeastRecent();
         } else {
-            targetNode = cached[key];
-            targetNode->updateValue(value);
+            Node *existingNode = use(key);
+            existingNode->updateValue(value);
         }
-
-        use(key);
-
-        if(cached.size() > capacity)
-            removeLeastRecent();
     }
 };
 
