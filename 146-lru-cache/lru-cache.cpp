@@ -115,6 +115,7 @@ public:
     
     void put(int key, int value) {
         if(cached.find(key) == cached.end()){
+            // Whole point of capacity is to have max limit on nodes we can store
             if(cached.size() == capacity)
                 removeLeastRecent();
             Node *newNode = new Node(key, value);
