@@ -115,11 +115,11 @@ public:
     
     void put(int key, int value) {
         if(cached.find(key) == cached.end()){
+            if(cached.size() == capacity)
+                removeLeastRecent();
             Node *newNode = new Node(key, value);
             ordered.addNodeToBeginning(newNode);
             cached[key] = newNode;
-            if(cached.size() > capacity)
-                removeLeastRecent();
         } else {
             Node *existingNode = use(key);
             existingNode->updateValue(value);
