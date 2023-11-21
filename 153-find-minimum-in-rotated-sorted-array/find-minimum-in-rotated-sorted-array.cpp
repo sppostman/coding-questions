@@ -8,6 +8,9 @@ public:
         int l=0,r=nums.size()-1,mid;
         int mn = nums[0];
         while(l<=r){
+            if(nums[l] <= nums[r])
+                return min(mn, nums[l]);
+
             mid = l+(r-l)/2;
             
             // mn = min(mn, nums[mid]);
