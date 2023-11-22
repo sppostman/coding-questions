@@ -10,8 +10,7 @@ public:
         while(l <= r){
             int mid = l+(r-l)/2;
             int i = mid/n, j=mid%n;
-            // printf("mid(%d), [%d][%d] =",mid,i,j);
-            cout<<matrix[i][j]<<endl;
+
             if(matrix[i][j] == target)
                 return true;
             if(target < matrix[i][j])
