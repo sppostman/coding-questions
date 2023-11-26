@@ -27,18 +27,14 @@ public:
 
         if(!isvalid(root->left, prev))
             return false;
-
+        
         if(prev && prev->val >= root->val)
             return false;
+            
         prev = root;
-        
         return isvalid(root->right, prev);
     }
     bool isValidBST(TreeNode* root) {
-        if(!root)
-            return true;
-        // return isvalid(root, LONG_MIN, LONG_MAX);
-        
         TreeNode* prev = NULL;
         return isvalid(root, prev);
     }
