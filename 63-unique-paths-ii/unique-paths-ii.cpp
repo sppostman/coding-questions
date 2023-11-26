@@ -16,10 +16,10 @@ public:
     };
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
         int m= obstacleGrid.size(), n=obstacleGrid[0].size();
-        vector<vector<int>> dp(m, vector<int>(n, -1));
         if(obstacleGrid[0][0] || obstacleGrid[m-1][n-1])
             return 0;
 
+        // vector<vector<int>> dp(m, vector<int>(n, -1));
 
         // // Top down - TC O(m*n), SC O(m*n)
         // return gopaths(obstacleGrid,dp,0,0,m,n);
