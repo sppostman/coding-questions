@@ -63,12 +63,12 @@ public:
             return;
         }
 
-        for(int nxt=i; nxt<nums.size(); nxt++){
-            curr.push_back(nums[nxt]);
-            swap(nums[nxt], nums[i]);
+        for(int j=i; j<nums.size(); j++){
+            swap(nums[i], nums[j]);
+            curr.push_back(nums[i]);
             p3(nums, curr, i+1, result);
-            swap(nums[nxt], nums[i]);
             curr.pop_back();
+            swap(nums[i], nums[j]);
         }
     }
 
