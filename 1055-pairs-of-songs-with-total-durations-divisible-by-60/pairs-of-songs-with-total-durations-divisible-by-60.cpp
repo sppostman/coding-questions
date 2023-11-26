@@ -6,11 +6,10 @@ public:
         for(int t : time){
             if(t%60 == 0){
                 pairs += encountered[0];
-                encountered[0]++;
             } else {
                 pairs += encountered[60 - t%60];
-                encountered[t%60]++;
             }
+            encountered[t%60]++;
         }
         return pairs;
     }
