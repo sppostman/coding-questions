@@ -24,6 +24,7 @@ public:
         dp[0][0] = 1;
         for(int i=1; i<m; i++)
             dp[i][0] = obstacleGrid[i][0] ? 0 : dp[i-1][0];
+        // Optional
         // for(int j=1; j<n; j++)
         //     dp[0][j] = obstacleGrid[0][j] ? 0 : dp[0][j-1];
 
