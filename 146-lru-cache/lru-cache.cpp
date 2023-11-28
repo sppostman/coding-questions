@@ -58,11 +58,14 @@ class DLL {
         delete node;
     }
 
-    void removeLastNode(){
+    int removeLastNode(){
+        int removedKey = -1;
         Node *lastNode = getLastNode();
         if(lastNode){
+            removedKey = lastNode->getKey();
             removeNode(lastNode);
         }
+        return removedKey;
     }
 
     void addNodeToBeginning(Node *node){
@@ -81,11 +84,10 @@ private:
     int capacity;
 
     void removeLeastRecent(){
-        Node* lastNode = ordered.getLastNode();
-        if(lastNode){
-            // printf("Remove %d \n", lastNode->getKey());
-            cached.erase(lastNode->getKey());
-            ordered.removeLastNode();
+        int removedKey = ordered.removeLastNode();
+        if(removedKey != -1){
+            // printf("Remove %d \n", removedKey);
+            cached.erase(removedKey);
         }
     }
 
