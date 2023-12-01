@@ -18,8 +18,16 @@ public:
         return newHead;
     }
     ListNode* reverseList(ListNode* head) {
-        // Rec
-        return rev(head, NULL);
+        // Rec without prev
+        if(!head || !head->next)
+            return head;
+        ListNode *newHead = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+
+        // Rec with prev
+        // return rev(head, NULL);
 
         // ListNode *prev = NULL;
         // ListNode *nxt = NULL;
