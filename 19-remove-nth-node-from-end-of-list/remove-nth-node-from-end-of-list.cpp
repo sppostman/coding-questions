@@ -27,6 +27,7 @@ public:
         ListNode *removedNode = remover->next;
         remover->next = remover->next ? remover->next->next : nullptr;
         delete removedNode;
+        
         return head;
     }
 };
