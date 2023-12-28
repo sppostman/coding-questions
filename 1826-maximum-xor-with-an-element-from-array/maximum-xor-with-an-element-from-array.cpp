@@ -47,22 +47,18 @@ class Trie {
             }
             return maxXor;
         }
-        int getMaxXor(int num, int mx){
+        int getMaxXor(int num){
             Node *node = root;
             int maxXor = 0;
             for(int i=31; i>=0; i--){
-                int currXorBit = num>>i & 1;
-                Node *desired = node->getChild(1-currXorBit);
-                Node *undesired = node->getChild(currXorBit);
+                int currXorBit = (num>>i) & 1;
+                int desired = 1-currXorBit;
+                int available = node->hasChild(desired) ? desired : currXorBit;
 
-                if(desired && desired->mn <= mx){
-                    node = desired;
-                    maxXor |= 1<<i;
-                } else if(undesired->mn <= mx) {
-                    node = undesired;
-                } else {
+                node = node->getChild(available);
+                maxXor |= (currXorBit ^ available)<<i;
+                if(node == NULL)
                     return -1;
-                }
             }
             return maxXor;
         }
@@ -81,6 +77,40 @@ public:
         // }
         // return result;
 
+        // Offline queries
+        // vector<int> result(queries.size());
+        // vector<int> arr = nums;
+        // sort(arr.begin(), arr.end());
+        // int n=arr.size();
+
+        // typedef struct Query {
+        //     int id;
+        //     int num;
+        //     int mx;
+        // } Query;
+
+        // vector<Query> ques(queries.size());
+        // for(int id=0; id<queries.size(); id++){
+        //     ques[id].id = id;
+        //     ques[id].num = queries[id][0];
+        //     ques[id].mx = queries[id][1];
+        // }
+        // sort(ques.begin(), ques.end(), [](Query q1, Query q2){
+        //     return q1.mx <= q2.mx;
+        // });
+
+        // int insertedTill = -1;
+        // for(Query q : ques){
+        //     while(insertedTill+1 < n && arr[insertedTill+1] <= q.mx)
+        //         trie.insert(arr[++insertedTill]);
+        //     // if(insertedTill < 0)
+        //     //     result[q.id] = -1;
+        //     // else
+        //     result[q.id] = trie.getMaxXor(q.num);
+        // }
+
+        // return result;
+
         vector<int> result(queries.size());
         vector<int> arr = nums;
         sort(arr.begin(), arr.end());
@@ -97,12 +127,7 @@ public:
             while(i<arr.size() && arr[i] <= query.first)
                 trie.insert(arr[i++]);
 
-            // No elmeent in trie
-            if(i==0)
-                result[query.second.second] = -1;
-            else
-                result[query.second.second] = trie.getMaxXorWithoutMax(query.second.first);
-            // printf("Process query-%d, mx(%d) => %d\n", query.second.second, query.first, result[query.second.second]);
+            result[query.second.second] = trie.getMaxXor(query.second.first);
         }
 
         return result;
