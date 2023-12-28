@@ -1,80 +1,68 @@
-typedef struct Node {
-    Node* children[26];
+
+class Node {
+    private:
+    Node *children[26];
     bool ends;
 
+    public:
     Node(){
         for(int i=0; i<26; i++)
             this->children[i] = NULL;
-        this->ends = false;
+        ends = false;
     }
 
-    bool hasChar(char ch){
-        int idx = ch - 'a';
-        return children[idx] != NULL;
+    bool isEnd(){
+        return ends;
     }
-
-    Node* getChar(char ch){
-        int idx = ch - 'a';
-        return children[idx];
-    }
-
-    Node* addChildIfNotExists(char ch){
-        int idx = ch - 'a';
-        if(!children[idx])
-            children[idx] = new Node();
-        return children[idx];
-    }
-
     void setEnd(){
         ends = true;
     }
-} Node;
+    Node* getChild(char c){
+        return children[c-'a'];
+    }
+    Node* addChildIfNotExists(char c){
+        int targetIdx = c-'a';
+        if(children[targetIdx] == NULL)
+            children[targetIdx] = new Node();
+        return children[targetIdx];
+    }
+};
 
 class Trie {
-private:
-    Node* root;
-
+    Node *root;
 public:
-
     Trie() {
         root = new Node();
     }
     
     void insert(string word) {
-        Node *node = root;
-
-        for(int i=0; i<word.size(); i++){
-            char ch = word[i];
-            node = node->addChildIfNotExists(ch);
+        Node *curr = root;
+        for(char c : word){
+            curr = curr->addChildIfNotExists(c);
         }
-
-        node->setEnd();
+        curr->setEnd();
     }
     
     bool search(string word) {
-        Node *node = root;
-        
-        for(int i=0; i<word.size(); i++){
-            char ch = word[i];
-            if(! node->hasChar(ch) )
+        Node *curr = root;
+        for(char c : word){
+            if(curr == NULL){
                 return false;
-            node = node->getChar(ch);
+            }
+            curr = curr->getChild(c);
         }
-
-        return node->ends;
+        return curr != NULL && curr->isEnd();
     }
     
     bool startsWith(string prefix) {
-        Node *node = root;
-        
-        for(int i=0; i<prefix.size(); i++){
-            char ch = prefix[i];
-            if(! node->hasChar(ch) )
+        Node *curr = root;
+        for(char c : prefix){
+            if(curr == NULL){
                 return false;
-            node = node->getChar(ch);
+            }
+            curr = curr->getChild(c);
         }
-
-        return true;
+        return curr != NULL;
     }
 };
 
