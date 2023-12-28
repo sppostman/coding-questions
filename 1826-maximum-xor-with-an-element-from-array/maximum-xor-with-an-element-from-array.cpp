@@ -78,56 +78,32 @@ public:
         // return result;
 
         // Offline queries
-        // vector<int> result(queries.size());
-        // vector<int> arr = nums;
-        // sort(arr.begin(), arr.end());
-        // int n=arr.size();
-
-        // typedef struct Query {
-        //     int id;
-        //     int num;
-        //     int mx;
-        // } Query;
-
-        // vector<Query> ques(queries.size());
-        // for(int id=0; id<queries.size(); id++){
-        //     ques[id].id = id;
-        //     ques[id].num = queries[id][0];
-        //     ques[id].mx = queries[id][1];
-        // }
-        // sort(ques.begin(), ques.end(), [](Query q1, Query q2){
-        //     return q1.mx <= q2.mx;
-        // });
-
-        // int insertedTill = -1;
-        // for(Query q : ques){
-        //     while(insertedTill+1 < n && arr[insertedTill+1] <= q.mx)
-        //         trie.insert(arr[++insertedTill]);
-        //     // if(insertedTill < 0)
-        //     //     result[q.id] = -1;
-        //     // else
-        //     result[q.id] = trie.getMaxXor(q.num);
-        // }
-
-        // return result;
-
         vector<int> result(queries.size());
         vector<int> arr = nums;
         sort(arr.begin(), arr.end());
+        int n=arr.size();
 
-        vector<pair<int, pair<int,int>>> ques;
-        for(int q=0; q<queries.size(); q++){
-            auto &query = queries[q];
-            ques.push_back({queries[q][1], {queries[q][0], q}});
+        typedef struct Query {
+            int id;
+            int num;
+            int mx;
+        } Query;
+
+        vector<Query> ques(queries.size());
+        for(int id=0; id<queries.size(); id++){
+            ques[id].id = id;
+            ques[id].num = queries[id][0];
+            ques[id].mx = queries[id][1];
         }
-        sort(ques.begin(), ques.end());
-        
-        int i = 0;
-        for(auto &query : ques){
-            while(i<arr.size() && arr[i] <= query.first)
-                trie.insert(arr[i++]);
+        sort(ques.begin(), ques.end(), [](Query q1, Query q2){
+            return q1.mx < q2.mx;
+        });
 
-            result[query.second.second] = trie.getMaxXor(query.second.first);
+        int insertedTill = 0;
+        for(Query q : ques){
+            while(insertedTill < n && arr[insertedTill] <= q.mx)
+                trie.insert(arr[insertedTill++]);
+            result[q.id] = trie.getMaxXor(q.num);
         }
 
         return result;
