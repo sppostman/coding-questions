@@ -84,35 +84,42 @@ public:
         // }
         // return result;
 
-        // Offline queries
-        vector<int> result(queries.size());
-        vector<int> arr = nums;
-        sort(arr.begin(), arr.end());
-        int n=arr.size();
-
-        typedef struct Query {
-            int id;
-            int num;
-            int mx;
-        } Query;
-
-        vector<Query> ques(queries.size());
-        for(int id=0; id<queries.size(); id++){
-            ques[id].id = id;
-            ques[id].num = queries[id][0];
-            ques[id].mx = queries[id][1];
-        }
-        sort(ques.begin(), ques.end(), [](Query q1, Query q2){
-            return q1.mx < q2.mx;
-        });
-
-        int insertedTill = 0;
-        for(Query q : ques){
-            while(insertedTill < n && arr[insertedTill] <= q.mx)
-                trie.insert(arr[insertedTill++]);
-            result[q.id] = trie.getMaxXorWithoutMax(q.num);
-        }
-
+        // With min in trie
+        for(int n : nums)
+            trie.insert(n);
+        vector<int> result;
+        for(auto &query : queries)
+            result.push_back(trie.getMaxXor(query[0], query[1]));
         return result;
+
+        // Offline queries
+        // vector<int> result(queries.size());
+        // vector<int> arr = nums;
+        // sort(arr.begin(), arr.end());
+        // int n=arr.size();
+
+        // typedef struct Query {
+        //     int id;
+        //     int num;
+        //     int mx;
+        // } Query;
+
+        // vector<Query> ques(queries.size());
+        // for(int id=0; id<queries.size(); id++){
+        //     ques[id].id = id;
+        //     ques[id].num = queries[id][0];
+        //     ques[id].mx = queries[id][1];
+        // }
+        // sort(ques.begin(), ques.end(), [](Query q1, Query q2){
+        //     return q1.mx < q2.mx;
+        // });
+
+        // int insertedTill = 0;
+        // for(Query q : ques){
+        //     while(insertedTill < n && arr[insertedTill] <= q.mx)
+        //         trie.insert(arr[insertedTill++]);
+        //     result[q.id] = trie.getMaxXorWithoutMax(q.num);
+        // }
+        // return result;
     }
 };
