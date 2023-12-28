@@ -37,20 +37,6 @@ class Trie {
             Node *node = root;
             int maxXor = 0;
             for(int i=31; i>=0; i--){
-                int currXorBit = num>>i & 1;
-                if(node->hasChild(1-currXorBit)){
-                    node = node->getChild(1-currXorBit);
-                    maxXor |= 1<<i;
-                }
-                else
-                    node = node->getChild(currXorBit);
-            }
-            return maxXor;
-        }
-        int getMaxXor(int num){
-            Node *node = root;
-            int maxXor = 0;
-            for(int i=31; i>=0; i--){
                 int currXorBit = (num>>i) & 1;
                 int desired = 1-currXorBit;
                 int available = node->hasChild(desired) ? desired : currXorBit;
@@ -59,6 +45,27 @@ class Trie {
                 maxXor |= (currXorBit ^ available)<<i;
                 if(node == NULL)
                     return -1;
+            }
+            return maxXor;
+        }
+        int getMaxXor(int num, int max){
+            Node *node = root;
+            int maxXor = 0;
+            for(int i=31; i>=0; i--){
+                int currXorBit = (num>>i) & 1;
+                int desired = 1-currXorBit;
+
+                Node *undes = node->getChild(currXorBit);
+                Node *des = node->getChild(desired);
+                
+                if(des != NULL && des->mn <= max){
+                    maxXor |= 1<<i;
+                    node = des;
+                } else if(undes != NULL && undes->mn <= max){
+                    node = undes;
+                } else {
+                    return -1;
+                }
             }
             return maxXor;
         }
@@ -103,7 +110,7 @@ public:
         for(Query q : ques){
             while(insertedTill < n && arr[insertedTill] <= q.mx)
                 trie.insert(arr[insertedTill++]);
-            result[q.id] = trie.getMaxXor(q.num);
+            result[q.id] = trie.getMaxXorWithoutMax(q.num);
         }
 
         return result;
