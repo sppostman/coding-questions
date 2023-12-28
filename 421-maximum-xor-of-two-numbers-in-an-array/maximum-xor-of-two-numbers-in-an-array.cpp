@@ -25,41 +25,22 @@ class Trie {
             root = new Node();
         }
         void insert(int num){
-            Node *node = root;
-
+            Node *curr = root;
             for(int i=31; i>=0; i--){
-                node = node->addIfNotExists((num >> i) & 1);
+                curr = curr->addIfNotExists((num >> i) & 1);
             }
         }
         int getXor(int x){
-            Node *node = root;
-            int best = 0;
-
+            int xorResult = 0;
+            Node *curr = root;
             for(int i=31; i>=0; i--){
-                int desired = 1-(x >> i & 1);
-                if(node->hasBit(desired)){
-                    node = node->getBit(desired);
-                    best |= 1 << i;
-                } else {
-                    node = node->getBit(1-desired);
-                }
+                int bit = (x>>i) & 1;
+                int desired = bit ^ 1; // opposite bit
+                int best = curr->hasBit(desired) ? desired : bit;
+                curr = curr->getBit(best);
+                xorResult |= (bit ^ best) << i;
             }
-            return best;
-        }
-        int getXorCandidate(int x){
-            Node *node = root;
-            int best = 0;
-            for(int i=31; i>=0; i--){
-                int desired = 1-(x >> i & 1);
-                if(node->hasBit(desired)){
-                    node = node->getBit(desired);
-                    best |= desired << i;
-                } else {
-                    node = node->getBit(1-desired);
-                    best |= 1-desired << i;
-                }
-            }
-            return best;
+            return xorResult;
         }
 };
 
@@ -77,8 +58,6 @@ public:
         int mx = 0;
         for(int n : nums){
             mx = max(mx, trie.getXor(n));
-            // printf("%d ^ %d\n", n, n^trie.getXorCandidate(n));
-            // mx = max(mx, n^trie.getXorCandidate(n));
         }
         return mx;
 
