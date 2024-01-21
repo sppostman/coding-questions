@@ -17,10 +17,17 @@ public:
     }
     int rob(vector<int>& nums) {
         // 4 2 2 9
-        int n = nums.size();
 
-        vector<vector<int>> dp(n, vector<int>(2, -1));
+        // int n = nums.size();
+        // vector<vector<int>> dp(n, vector<int>(2, -1));
+        // return robit(nums, dp, n-1, true);
 
-        return robit(nums, dp, n-1, true);
+        int adj = 0, allowed = 0;
+        for(int house : nums){
+            int prevAllowed = allowed;
+            allowed = max(adj, prevAllowed);
+            adj = house + prevAllowed;
+        }
+        return max(adj, allowed);
     }
 };
