@@ -9,7 +9,7 @@ public:
             if(arr[mid] == x)   
                 return true;
 
-            if(arr[mid] == arr[l] && arr[mid] == arr[r])
+            if(arr[r] == arr[l] && arr[mid] == arr[r])
                 l++, r--;
             else if(
                 (arr[l]<=arr[mid] && arr[l] <= x && x <= arr[mid]) ||
