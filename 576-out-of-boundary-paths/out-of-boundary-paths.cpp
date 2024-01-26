@@ -33,15 +33,14 @@ public:
         // );
         // return pathsFromHere(startRow, startColumn, m, n, maxMove, dp);
 
-        vector<vector<vector<int>>> dp(
-            maxMove+1,
-            vector<vector<int>>(m, vector<int>(n, 0))
-        );
+        vector<vector<int>> dp(m, vector<int>(n, 0));
 
         vector<pair<int,int>> moves = {
             {-1, 0}, {1, 0}, {0, -1}, {0, 1}
         };
         for(int remaining=1; remaining<=maxMove; remaining++){
+            vector<vector<int>> nextDp(m, vector<int>(n, 0));
+
             for(int x=0; x<m; x++){
                 for(int y=0; y<n; y++){
                     int pathsFromHere = 0;
@@ -52,12 +51,13 @@ public:
                         if(nextX<0 || nextY<0 || nextX>=m || nextY>=n)
                             pathsFromHere = (pathsFromHere + 1) % MOD;
                         else
-                            pathsFromHere = (pathsFromHere + dp[remaining-1][nextX][nextY]) % MOD;
+                            pathsFromHere = (pathsFromHere + dp[nextX][nextY]) % MOD;
                     }
-                    dp[remaining][x][y] = pathsFromHere%MOD;
+                    nextDp[x][y] = pathsFromHere%MOD;
                 }
             }
+            dp = nextDp;
         }
-        return dp[maxMove][startRow][startColumn];
+        return dp[startRow][startColumn];
     }
 };
