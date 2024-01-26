@@ -1,7 +1,7 @@
 class Solution {
 public:
     int findMin(vector<int>& arr) {
-        int l=0,r=arr.size()-1,mid;
+        int l=0, r=arr.size()-1, mid;
         int mn = arr[0];
 
         while(l<=r){
@@ -19,6 +19,7 @@ public:
                 r = mid-1;
             }
         }
+        
         return mn;
     }
 };
