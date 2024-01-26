@@ -23,7 +23,7 @@ public:
         return false;
     }
 
-    bool search2(vector<int>& nums, int target) {
+    bool searchMore(vector<int>& nums, int target) {
         int l=0, r=nums.size()-1;
         int mid;
         
