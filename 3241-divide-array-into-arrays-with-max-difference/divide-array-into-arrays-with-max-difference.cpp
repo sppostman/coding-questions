@@ -9,9 +9,9 @@ public:
 
         for(int i=0; i<n; i+=3){
             vector<int> next;
+            if(nums[i+2]-nums[i] > k)
+                return {};
             for(int j=i; j<i+3; j++){
-                if(nums[j]-nums[i] > k)
-                    return {};
                 next.push_back(nums[j]);
             }
             result.push_back(next);
