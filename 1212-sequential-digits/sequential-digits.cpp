@@ -14,12 +14,9 @@ public:
         vector<int> result;
 
         int n=10;
-        while(true){
-            if(current <= high){
-                if(current >= low)
-                    result.push_back(current);
-            } else
-                break;
+        while(current <= high){
+            if(current >= low)
+                result.push_back(current);
 
             int lastdigit = current%10;
 
