@@ -2,7 +2,7 @@ class FreqStack {
 private:
     int highestFrequency;
     unordered_map<int, int> counts;
-    unordered_map<int, vector<int>> freqWiseElments;
+    unordered_map<int, stack<int>> freqWiseElments;
 
 public:
     FreqStack() {
@@ -11,7 +11,7 @@ public:
     
     void push(int val) {
         int updatedFrequency = ++counts[val];
-        freqWiseElments[updatedFrequency].push_back(val);
+        freqWiseElments[updatedFrequency].push(val);
         highestFrequency = max(highestFrequency, updatedFrequency);
     }
     
@@ -19,10 +19,10 @@ public:
         if(highestFrequency == 0)
             return -1;
         
-        int poppedElement = freqWiseElments[highestFrequency].back();
-        freqWiseElments[highestFrequency].pop_back();
-
+        int poppedElement = freqWiseElments[highestFrequency].top();
+        freqWiseElments[highestFrequency].pop();
         counts[poppedElement]--;
+
         if(freqWiseElments[highestFrequency].size() == 0)
             highestFrequency--;
 
