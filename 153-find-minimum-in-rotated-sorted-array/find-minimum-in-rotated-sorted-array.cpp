@@ -5,17 +5,19 @@ public:
         int mn = arr[0];
 
         while(l<=r){
-            int mid = l+(r-l)/2;
+            mid = l+(r-l)/2;
+
             mn = min(arr[mid], mn);
 
-            if(arr[l] <= arr[r]){
-                mn = min(arr[l], mn);
-                break;
-            }
-
+            if(arr[l] <= arr[r])
+                return min(mn, arr[l]);
+                
             if(arr[l] <= arr[mid]){
+                mn = min(mn, arr[l]);
                 l = mid+1;
-            } else {
+            }
+            else {
+                mn = min(mn, arr[mid]);
                 r = mid-1;
             }
         }
