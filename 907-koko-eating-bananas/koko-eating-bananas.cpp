@@ -10,9 +10,10 @@ public:
     }
     int minEatingSpeed(vector<int>& piles, int hours) {
         int l = 1, mid;
-        int h = piles[0];
-        for(int pile : piles)
-            h = max(h, pile);
+        int h = *max_element(piles.begin(), piles.end());
+        // int h = piles[0];
+        // for(int pile : piles)
+        //     h = max(h, pile);
         
         int bestK = h;
 
