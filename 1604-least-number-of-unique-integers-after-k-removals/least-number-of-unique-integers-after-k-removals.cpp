@@ -4,8 +4,8 @@ public:
         unordered_map<int,int> counter;
         for(auto &n : arr)  counter[n]++;
 
-        if(k == 0)
-            return counter.size();
+        // if(k == 0)
+        //     return counter.size();
 
         vector<int> counts;
         for(const auto &[el, count] : counter)
