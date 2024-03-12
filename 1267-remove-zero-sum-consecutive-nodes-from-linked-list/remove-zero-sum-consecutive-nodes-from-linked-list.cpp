@@ -13,7 +13,7 @@ public:
     ListNode* removeZeroSumSublists(ListNode* head) {
         map<int, ListNode*> presummed;
         stack<int> encountered;
-        
+
         ListNode *dhead = new ListNode(-1, head);
         presummed[0] = dhead;
 
@@ -29,11 +29,16 @@ public:
             // } else
             if(presummed[sum] != nullptr){
                 ListNode *prevlink = presummed[sum];
-                prevlink->next = curr->next;
-                while(encountered.size() && encountered.top() != sum){
-                    presummed.erase(encountered.top());
-                    encountered.pop();
+                
+                int tempsum = sum;
+                ListNode *tmp = prevlink->next;
+                while(tmp && tmp != curr){
+                    tempsum += tmp->val;
+                    presummed.erase(tempsum);
+                    tmp = tmp->next;
                 }
+
+                prevlink->next = curr->next;
             } else {
                 encountered.push(sum);
                 presummed[sum] = curr;
