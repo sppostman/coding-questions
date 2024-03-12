@@ -13,6 +13,7 @@ public:
     ListNode* removeZeroSumSublists(ListNode* head) {
         map<int, ListNode*> presummed;
         stack<int> encountered;
+        
         ListNode *dhead = new ListNode(-1, head);
         presummed[0] = dhead;
 
@@ -20,7 +21,7 @@ public:
         ListNode* curr = head;
         while(curr != nullptr){
             sum += curr->val;
-            cout<<"Sum "<<sum<<", ";
+
             // if(sum == 0){
             //     prev = dhead;
             //     dhead->next = curr->next;
