@@ -12,7 +12,6 @@ class Solution {
 public:
     ListNode* removeZeroSumSublists(ListNode* head) {
         map<int, ListNode*> presummed;
-        stack<int> encountered;
 
         ListNode *dhead = new ListNode(-1, head);
         presummed[0] = dhead;
@@ -40,7 +39,6 @@ public:
 
                 prevlink->next = curr->next;
             } else {
-                encountered.push(sum);
                 presummed[sum] = curr;
             }
             curr = curr->next;
