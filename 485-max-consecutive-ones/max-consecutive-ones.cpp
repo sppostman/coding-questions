@@ -7,10 +7,7 @@ public:
 
         for(int i=1; i<n; i++){
             if(nums[i]==1){
-                if(nums[i] == nums[i-1])
-                    currcons++;
-                else
-                    currcons = 1;
+                currcons++;
             } else {
                 currcons = 0;
             }
