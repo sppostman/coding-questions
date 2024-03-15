@@ -10,14 +10,5 @@ public:
             nums[anchor++] = nums[i++];
         }
         return anchor;
-        // int l=0;
-        // int curr = 0;
-        // while(curr < len){
-        //     while(curr+1 < len && nums[curr+1] == nums[curr])
-        //         curr++;
-        //     cout << "Curr @ " << curr << ", l @ " << l << endl;
-        //     nums[l++] = nums[curr++];
-        // }
-        // return l;
     }
 };
