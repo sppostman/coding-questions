@@ -9,13 +9,19 @@ public:
             extras.push_back(nums[i]);
         }
 
-        int i = 0;
-        while(i<k){
+        for(int i=0; i<k; i++)
             nums[i] = nums[n-k+i];
-            i++;
+        for(int i=k; i<n; i++){
+            nums[i] = extras[i-k];
         }
 
-        for(int e : extras)
-            nums[i++] = e;
+        // int i = 0;
+        // while(i<k){
+        //     nums[i] = nums[n-k+i];
+        //     i++;
+        // }
+        // for(int e : extras)
+        //     nums[i++] = e;
+
     }
 };
