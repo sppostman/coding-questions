@@ -10,12 +10,12 @@ public:
         for(int n : nums){
             if(n == el)
                 count++;
-            else if(count == 0){
+            else
+                count--;
+            if(count < 0){
                 el=n;
                 count=1;
             }
-            else
-                count--;
         }
         if(count > n/2)
             return el;
