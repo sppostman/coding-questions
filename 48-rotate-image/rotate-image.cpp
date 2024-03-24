@@ -6,9 +6,9 @@ public:
         /*
         Transpose & then reverse row-wiser
 
-        1 4 7  1 4 7
-        2 5    2 5 8
-        3      3 6 9
+        1       1 4 7   7 4 1
+        2 5     2 5 8   8 5 2
+        3 6 9   3 6 9   9 6 3
         */
 
         // Transpose
