@@ -2,7 +2,7 @@ class Solution {
 public:
     int numSubarraysWithSum(vector<int>& a, int k) {
         int n = a.size();
-        vector<int> ps(k+n+1,0);
+        vector<int> ps(k+n+1,0); // Better than map, since we know upper limit of sum
         int sum = 0;
         int count = 0;
         for(int i=0; i<n; i++){
