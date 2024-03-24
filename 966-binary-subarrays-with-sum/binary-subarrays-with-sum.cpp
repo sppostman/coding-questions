@@ -1,15 +1,16 @@
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& a, int k) {
-        unordered_map<long, int> ps;
         int n = a.size();
-        long sum = 0;
+        vector<int> ps(k+n+1,0);
+        int sum = 0;
         int count = 0;
         for(int i=0; i<n; i++){
             sum += a[i];
             if(sum == k)
                 count++;
-            count+=ps[sum-k];
+            if(sum-k >= 0)
+                count+=ps[sum-k];
             ps[sum]++;
         }
         return count;
