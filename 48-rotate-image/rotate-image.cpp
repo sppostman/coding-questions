@@ -16,10 +16,12 @@ public:
         */
 
         // Transpose
-        // for(int i=0; i<n; i++){
-        //     for(int j=0; j<n-i; j++)
-        //         swap(matrix[i][j], matrix[j][i]);
-        // }
+        for(int i=0; i<n; i++)
+            for(int j=0; j<i; j++)
+                swap(matrix[i][j], matrix[j][i]);
+        for(int i=0; i<n; i++)
+            for(int j=0; j<n/2; j++)
+                swap(matrix[i][j], matrix[i][n-j-1]);
 
         // // Transpose
         // for(int i=0; i<n; i++)
@@ -29,17 +31,16 @@ public:
         //     for(int j=0; j<n/2; j++)
         //         swap(matrix[i][j], matrix[i][n-j-1]);
 
-        // Brute using extra space
-        auto res = matrix;
+        // // Brute using extra space
+        // auto res = matrix;
         
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                res[j][n-i-1] = matrix[i][j];
-            }
-        }
-        
-        for(int i=0; i<n; i++)
-            for(int j=0; j<n; j++)
-                matrix[i][j] = res[i][j];
+        // for(int i=0; i<n; i++){
+        //     for(int j=0; j<n; j++){
+        //         res[j][n-i-1] = matrix[i][j];
+        //     }
+        // }
+        // for(int i=0; i<n; i++)
+        //     for(int j=0; j<n; j++)
+        //         matrix[i][j] = res[i][j];
     }
 };
