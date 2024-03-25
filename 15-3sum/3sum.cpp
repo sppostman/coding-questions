@@ -31,34 +31,6 @@ class Solution
                 }
             }
             return result;
-            // -4 -1 -1 0 1 2
-
-            
-            // int l,r;
-            // for(int i=0; i<n; i++){
-            //     if(i>0 && a[i]==a[i-1])    continue;
-
-            //     l=i+1;
-            //     r=n-1;
-            //     int required = -a[i];
-            //     while(l<r){
-            //         if(a[l]+a[r] == required){
-            //             result.push_back({a[i],a[l],a[r]});
-            //             do {
-            //                 l++;
-            //             }while(l<r && a[l-1]==a[l]);
-            //             do {
-            //                 r--;
-            //             }while(l<r && a[r]==a[r+1]);
-            //         }
-            //         else if(a[l]+a[r] < required)
-            //             l++;
-            //         else
-            //             r--;
-            //     }
-            // }
-            // return result;
-
 
             // // TLE - Hashmap, O(n^2), O(n+m) (m for no. of unique triplets)
             // set<vector<int>> uniqueTriplets;
