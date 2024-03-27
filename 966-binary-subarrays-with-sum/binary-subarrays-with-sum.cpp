@@ -1,6 +1,7 @@
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& a, int k) {
+        // Time O(2n)    Space O(n)
         // int n = a.size();
         // vector<int> ps(k+n+1,0); // Better than map, since we know upper limit of sum
         // int sum = 0;
@@ -14,7 +15,8 @@ public:
         //     ps[sum]++;
         // }
         // return count;
-        cout<<numSubarraysWithLessThanEqSum(a,k)<<", "<<numSubarraysWithLessThanEqSum(a,k-1)<<endl;
+
+        // O(4n) ie. 2xO(2n)   Space O(1)
         return numSubarraysWithLessThanEqSum(a, k) - numSubarraysWithLessThanEqSum(a, k-1);
     }
     int numSubarraysWithLessThanEqSum(vector<int>& a, int k){
@@ -25,9 +27,8 @@ public:
         int count=0, sum=0;
         while(j<n){
             sum += a[j];
-            while(i<=j && sum > k)
+            while(sum > k)
                 sum -= a[i++];
-            
             count += j-i+1;
             j++;
         }
