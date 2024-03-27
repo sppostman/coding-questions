@@ -6,17 +6,15 @@ public:
 
         int l = 0, r=0;
         int largest = 0;
-        for(int i=0; i<n; i++){
-            char ch = s[i];
-            // new in substring
-            if(lastOccurence[ch] < l){
-                r = i;
+        while(r<n){
+            char c = s[r];
+            if(lastOccurence[c] < l){
+                largest = max(largest, r-l+1);
             } else {
-                l = lastOccurence[ch]+1;
-                r = i;
+                l = lastOccurence[c]+1;
             }
-            lastOccurence[ch] = i;
-            largest = max(largest, r-l+1);
+            lastOccurence[c] = r;
+            r++;
         }
         return largest;
     }
