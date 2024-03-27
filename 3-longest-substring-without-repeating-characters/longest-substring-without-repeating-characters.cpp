@@ -8,6 +8,7 @@ public:
         int largest = 0;
         while(r<n){
             char c = s[r];
+
             if(lastOccurence[c] < l){
                 largest = max(largest, r-l+1);
             } else {
