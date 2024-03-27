@@ -12,7 +12,7 @@ public:
         int i=0, j=0;
         int ones = 0;
         int swaps = total-1;
-        while(j < n+total){
+        while(j < n+total-1){
             if(j-i < total){
                 ones += nums[j%n];
                 j++;
