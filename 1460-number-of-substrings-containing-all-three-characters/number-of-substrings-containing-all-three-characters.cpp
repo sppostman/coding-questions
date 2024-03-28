@@ -9,12 +9,13 @@ public:
         for(int i=0; i<n; i++){
             int c = s[i]-'a';
             prev[c] = i;
-            if(prev[0] != -1 && prev[1] != -1 && prev[2] != -1){
+            // Can omit since min() => -1, & -1+1 => 0
+            // if(prev[0] != -1 && prev[1] != -1 && prev[2] != -1){
                 int minimalWindowLeft = min({ prev[0], prev[1], prev[2]});
                 count += minimalWindowLeft+1;
-            }
+            // }
         }
-        
+
         return count;
     }
 };
