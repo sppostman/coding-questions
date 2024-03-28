@@ -5,19 +5,16 @@ public:
         vector<int> lastOccurence(256, -1); // Has better O(1) than hashmap's O(1)
 
         int l = 0, r=0;
-        int largest = 0;
+        int mx = 0;
         while(r<n){
             char c = s[r];
-
-            if(lastOccurence[c] < l){
-                largest = max(largest, r-l+1);
-            } else {
+            if(lastOccurence[c] >= l)
                 l = lastOccurence[c]+1;
-            }
             lastOccurence[c] = r;
+            mx = max(mx, r-l+1);
             r++;
         }
-        return largest;
+        return mx;
     }
         
 
