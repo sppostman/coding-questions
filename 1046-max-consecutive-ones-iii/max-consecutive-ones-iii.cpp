@@ -7,12 +7,21 @@ public:
         int mx=0;
         while(r<n){
             zeros += nums[r]==0;
-            while(zeros > k){
+
+            if(zeros > k){
                 zeros -= nums[l]==0;
                 l++;
             }
-            mx = max(mx, r-l+1);
+            if(zeros <= k)
+                mx = max(mx, r-l+1);
             r++;
+
+            // while(zeros > k){
+            //     zeros -= nums[l]==0;
+            //     l++;
+            // }
+            // mx = max(mx, r-l+1);
+            // r++;
         }
         return mx;
 
