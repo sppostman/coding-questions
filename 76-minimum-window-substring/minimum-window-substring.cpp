@@ -17,22 +17,14 @@ public:
                 gotten++;
             tchar[c]--;
 
-            if(gotten == t.size()){
+            while(gotten == t.size()){
                 if(j-i+1 < best){
                     best = j-i+1;
                     bestI = i;
                 }
-            }
-
-            while(gotten >= t.size()){
-                if(tchar[s[i]] == 0)
-                    gotten--;
-                else if(j-i < best){
-                    best = j-i;
-                    bestI = i+1;
-                }
-
                 tchar[s[i]]++;
+                if(tchar[s[i]] > 0)
+                    gotten--;
                 i++;
             }
 
