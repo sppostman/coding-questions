@@ -26,6 +26,7 @@ public:
             if(j-i+1 - mxFreq > k){
                 char rem = s[i]-'A';
                 freq[rem]--;
+                // // Not required, since lesser mxFreq would dnever contribute to answer
                 // if(freq[rem]+1 == mxFreq){
                 //     mxFreq = 0;
                 //     for(int k=0; k<26; k++)
