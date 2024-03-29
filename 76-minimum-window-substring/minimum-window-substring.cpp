@@ -30,7 +30,7 @@ public:
 
             j++;
         }
-        return best == INT_MAX ? "" : s.substr(bestI, best);
+        return bestI == -1 ? "" : s.substr(bestI, best);
 
         // for(int i=0; i<n; i++){
         //     vector<int> rem = tchar; // Copied
@@ -50,6 +50,6 @@ public:
         //         }
         //     }
         // }
-        // return best == INT_MAX ? "" : s.substr(bestI, best);
+        // return bestI == -1 ? "" : s.substr(bestI, best);
     }
 };
