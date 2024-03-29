@@ -13,7 +13,17 @@ public:
             freq[c]++;
             mxFreq = max(mxFreq, freq[c]);
 
-            while(j-i+1 - mxFreq > k){
+            // while(j-i+1 - mxFreq > k){
+            //     char rem = s[i]-'A';
+            //     freq[rem]--;
+            //     if(freq[rem]+1 == mxFreq){
+            //         mxFreq = 0;
+            //         for(int k=0; k<26; k++)
+            //             mxFreq = max(mxFreq, freq[k]);
+            //     }
+            //     i++;
+            // }
+            if(j-i+1 - mxFreq > k){
                 char rem = s[i]-'A';
                 freq[rem]--;
                 if(freq[rem]+1 == mxFreq){
