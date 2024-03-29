@@ -30,8 +30,7 @@ public:
                 i++;
             }
 
-            if(freq.size() <= k)
-                count += j-i+1;
+            count += j-i+1;
 
             j++;
         }
