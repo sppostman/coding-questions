@@ -9,13 +9,11 @@ public:
         int count=0;
         while(j<n){
             count += nums[j]==x;
-            while(count - (nums[i]==x) == k){
+            while(count == k){
                 count -= nums[i] == x;
                 i++;
             }
-            if(count >= k){
-                total += i+1;
-            }
+            total += i;
             j++;
         }
         return total;
