@@ -9,7 +9,7 @@ public:
         int count=0;
         while(j<n){
             count += nums[j]==x;
-            while(count - (nums[i]==x) >= k){
+            while(count - (nums[i]==x) == k){
                 count -= nums[i] == x;
                 i++;
             }
