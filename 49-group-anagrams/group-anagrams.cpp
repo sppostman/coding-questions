@@ -9,7 +9,6 @@ public:
         }
 
         // map<map<char,int>, vector<string>> counter;
-
         // for(auto s : strs){
         //     map<char,int> individual;
         //     for(char c:s)
