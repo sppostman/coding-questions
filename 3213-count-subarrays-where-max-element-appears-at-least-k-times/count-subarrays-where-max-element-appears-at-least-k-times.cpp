@@ -16,13 +16,6 @@ public:
             if(count >= k){
                 total += i+1;
             }
-            // if(count >= k){
-            //     do {
-            //         i++;
-            //         count -= nums[i] == x;
-            //     } while(count - (nums[i]==x) >= k);
-            //     total += i+1;
-            // }
             j++;
         }
         return total;
