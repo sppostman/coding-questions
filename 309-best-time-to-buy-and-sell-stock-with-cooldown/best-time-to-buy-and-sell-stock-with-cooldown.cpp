@@ -27,6 +27,6 @@ public:
             nextAhead = ahead;
             ahead = dp;
         }
-        return max(ahead[1], nextAhead[1]);
+        return ahead[1];
     }
 };
