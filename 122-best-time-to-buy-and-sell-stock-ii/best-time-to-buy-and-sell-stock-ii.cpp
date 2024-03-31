@@ -25,21 +25,37 @@ public:
     }
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n+1, vector<int>(2, -1));
+        // vector<vector<int>> dp(n+1, vector<int>(2, -1));
         // return trade(prices, 1, 0, n, dp);
 
-        dp[n][0] = 0;
-        dp[n][1] = 0;
+        // vector<vector<int>> dp(n+1, vector<int>(2, -1));
+        // dp[n][0] = 0;
+        // dp[n][1] = 0;
+        // for(int i=n-1; i>=0; i--){
+        //     dp[i][1] = max(
+        //         dp[i+1][1],
+        //         -prices[i]+dp[i+1][0]
+        //     );
+        //     dp[i][0] = max(
+        //         dp[i+1][0],
+        //         prices[i]+dp[i+1][1]
+        //     );
+        // }
+        // return dp[0][1];
+
+        vector<int> prev(2, 0);
         for(int i=n-1; i>=0; i--){
-            dp[i][1] = max(
-                dp[i+1][1],
-                -prices[i]+dp[i+1][0]
+            vector<int> dp(2, 0);
+            dp[1] = max(
+                prev[1],
+                -prices[i]+prev[0]
             );
-            dp[i][0] = max(
-                dp[i+1][0],
-                prices[i]+dp[i+1][1]
+            dp[0] = max(
+                prev[0],
+                prices[i]+prev[1]
             );
+            prev = dp;
         }
-        return dp[0][1];
+        return prev[1];
     }
 };
