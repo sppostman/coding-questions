@@ -15,14 +15,10 @@ public:
 
             if(i<n && gt.size()){
                 res[i] = gt.top();
-                // cout<< res[i] <<", ";
             }
             
             gt.push(el);
         }
-
-        // 1  2   1    1    2   1
-        //        2(0) 2(1) -1 -1 
         return res;
     }
 };
