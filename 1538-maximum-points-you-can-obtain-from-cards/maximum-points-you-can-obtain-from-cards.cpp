@@ -4,18 +4,16 @@ public:
         int n = cardPoints.size();
 
         int lsum = 0, rsum = 0;
-        for(int i=0; i<k; i++){
+        for(int i=0; i<k; i++)
             lsum += cardPoints[i];
-        }
-        int mx = lsum;
 
-        int r = n-1;
+        int best = lsum;
         for(int i=k-1; i>=0; i--){
             lsum -= cardPoints[i];
-            rsum += cardPoints[r];
-            r--;
-            mx = max(lsum+rsum, mx);
+            rsum += cardPoints[n-1 - (k-i-1)];
+            best = max(best, lsum+rsum);
         }
-        return mx;
+
+        return best;
     }
 };
