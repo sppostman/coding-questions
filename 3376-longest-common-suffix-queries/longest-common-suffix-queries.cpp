@@ -53,24 +53,12 @@ class Trie {
     Trie(){
         root = new TrieNode();
     }
-    int prefixLength(string word){
-        TrieNode* curr = root;
-        int i=1;
-        for(char c : word){
-            if(!curr->hasChild(c))
-                return i;
-            curr = curr->getChild(c);
-            i++;
-        }
-        return i;
-    }
     void addWord(string word, int strIdx){
         TrieNode* curr = root;    
         if(word.size() < root->minStrHere){
             root->minStrIdx = strIdx;
             root->minStrHere = word.size();
         }    
-        printf("Root => %d\n", root->minStrHere);
         for(char c : word){
             curr = curr->addOrMakeChild(c, word.size(), strIdx);
         }
