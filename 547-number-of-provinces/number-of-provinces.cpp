@@ -28,13 +28,36 @@ public:
         int v = adjMat.size();
         vector<bool> visited(v);
         int prov=0;
-        for(int i=0;i<v;i++){
-            if(!visited[i]){
-                prov++;
-                // dfs(i,adjMat,visited);
-                bfs(i,adjMat,visited);
+
+        // for(int i=0;i<v;i++){
+        //     if(!visited[i]){
+        //         prov++;
+        //         // dfs(i,adjMat,visited);
+        //         bfs(i,adjMat,visited);
+        //     }
+        // }
+        // return prov;
+
+        vector<int> parents(v);
+        for(int i=0; i<v; i++) parents[i] = i;
+        for(int i=0; i<v; i++){
+            for(int j=0; j<i; j++){
+                if(adjMat[i][j]==1)
+                    merge(i, j, parents);
             }
         }
+        
+        for(int i=0; i<v; i++){
+            prov += findP(i, parents) == i;
+        }
         return prov;
+    }
+    void merge(int u, int v, vector<int> &parents){
+        parents[findP(v, parents)] = findP(u, parents);
+    }
+    int findP(int node, vector<int> &parents){
+        if(parents[node] == node)
+            return node;
+        return parents[node] = findP(parents[node], parents);
     }
 };
