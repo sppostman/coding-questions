@@ -10,7 +10,7 @@ public:
                     return false;
             }
         }
-        return true;
+        return !allowDiff;
     }
     int ladderLength(string beginWord, string endWord, vector<string>& givenWordList) {
         vector<string> wordList = givenWordList;
@@ -35,14 +35,14 @@ public:
         if(target == -1)
             return 0;
         
-        vector<int> dist(n, INT_MAX);
+        vector<bool> vis(n, false);
         queue<int> rem;
 
         int src = n-1;
-        dist[src] = 0;
+        vis[src] = true;
         rem.push(src);
 
-        int currDist = 1;
+        int currDist =0;
         while(rem.size()){
             currDist++;
             int reachableByCurrDist = rem.size();
@@ -50,15 +50,15 @@ public:
                 int x = rem.front();
                 rem.pop();
 
-                if(x != target){
-                    for(auto y : adjList[x])
-                        if(currDist < dist[y]){
-                            dist[y] = currDist;
-                            rem.push(y);
-                        }
-                }
+                if(x == target)
+                    return currDist;
+                for(auto y : adjList[x])
+                    if(!vis[y]){
+                        vis[y] = true;
+                        rem.push(y);
+                    }
             }
         }
-        return dist[target] == INT_MAX ? 0 : dist[target];
+        return 0;
     }
 };
