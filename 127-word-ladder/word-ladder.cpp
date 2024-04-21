@@ -52,6 +52,7 @@ public:
 
                 if(x == target)
                     return currDist;
+                    
                 for(auto y : adjList[x])
                     if(!vis[y]){
                         vis[y] = true;
