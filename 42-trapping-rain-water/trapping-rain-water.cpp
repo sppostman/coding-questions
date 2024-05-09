@@ -3,22 +3,40 @@ public:
     int trap(vector<int>& height) {
         int n = height.size();
 
-        // space - O(n), time - O(n)
         int trapped = 0;
-        int pmax = height[0];
-        vector<int> smax(n, 0);
-        smax[n-1] = height[n-1];
-        
-        for(int i=n-2; i>=0; i--)
-            smax[i] = max(smax[i+1], height[i]);
-        
-        for(int i=1; i<n-1; i++){
-            trapped += max(min(pmax, smax[i+1]) - height[i], 0);
-            pmax = max(pmax, height[i]);
+        int i = 1, j = n-1;
+        int mxI = height[0];
+        int mxJ = height[n-1];
+
+        while(i <= j){
+            if(mxI <= mxJ){
+                trapped += max(mxI - height[i], 0);
+                mxI = max(mxI, height[i]);
+                i++;
+            } else {
+                trapped += max(mxJ - height[j], 0);
+                mxJ = max(mxJ, height[j]);
+                j--;
+            }
         }
         return trapped;
+
+        // // space - O(n), time - O(n)
+        // int trapped = 0;
+        // int pmax = height[0];
+        // vector<int> smax(n, 0);
+        // smax[n-1] = height[n-1];
         
-        // space - O(2n), time - O(n)
+        // for(int i=n-2; i>=0; i--)
+        //     smax[i] = max(smax[i+1], height[i]);
+        
+        // for(int i=1; i<n-1; i++){
+        //     trapped += max(min(pmax, smax[i+1]) - height[i], 0);
+        //     pmax = max(pmax, height[i]);
+        // }
+        // return trapped;
+        
+        // // space - O(2n), time - O(n)
         // int trapped = 0;
         // vector<int> pmax(n, 0);
         // vector<int> smax(n, 0);
