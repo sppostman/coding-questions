@@ -11,6 +11,7 @@ public:
                 int size = -ast;
                 while(rights.size() && rights.top() < size)
                     rights.pop();
+                
                 if(rights.empty())
                     safe.push_back(ast);
                 else if(rights.top() == size)
