@@ -1,5 +1,43 @@
 class Solution {
 public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        int maxArea = 0;
+
+        stack<int> ps;
+        for(int i=0; i<n; i++){
+            while(ps.size() && heights[ps.top()] >= heights[i]){
+                int j = ps.top();
+                ps.pop();
+
+                int width = ps.size() ? i - ps.top() - 1 : i;
+                maxArea = max(maxArea, width * heights[j]);
+            }
+            ps.push(i);
+        }
+
+        while(ps.size()){
+            int j = ps.top();
+            ps.pop();
+
+            int width = ps.size() ? n - ps.top() - 1 : n;
+
+            maxArea = max(maxArea, width * heights[j]);
+        }
+        return maxArea;
+
+        // vector<int> pse = smaller(heights, n, true);
+        // vector<int> nse = smaller(heights, n, false);
+        
+        // int maxArea = 0;
+        // for(int i=0; i<n; i++){
+        //     int left = i - pse[i];
+        //     int right = nse[i] - i;
+        //     maxArea = max(maxArea, (left+right-1)*heights[i]);
+        // }
+        // return maxArea;
+    }
+
     vector<int> smaller(vector<int>& heights, int n, bool prev) {
         vector<int> se(n, 0);
         stack<int> ls;
@@ -22,18 +60,5 @@ public:
             se[j] = ls.size() ? ls.top() : outofboundSmaller;
         }
         return se;
-    }
-    int largestRectangleArea(vector<int>& heights) {
-        int n = heights.size();
-        vector<int> pse = smaller(heights, n, true);
-        vector<int> nse = smaller(heights, n, false);
-        
-        int maxArea = 0;
-        for(int i=0; i<n; i++){
-            int left = i - pse[i];
-            int right = nse[i] - i;
-            maxArea = max(maxArea, (left+right-1)*heights[i]);
-        }
-        return maxArea;
     }
 };
