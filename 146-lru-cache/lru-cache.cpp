@@ -1,132 +1,84 @@
-typedef struct Node {
-    private:
+class Node {
+    public:
     int key;
     int value;
-    
-    public:
-    Node *left;
-    Node *right;
-
-    Node(int key, int value){
-        left=NULL;
-        right=NULL;
-        this->key = key;
-        this->value = value;
+    Node *prev, *next;
+    Node(int _key, int _value){
+        this->key = _key;
+        this->value = _value;
+        this->prev = nullptr;
+        this->next = nullptr;
     }
-
-    int getKey(){
-        return this->key;
-    }
-    int getValue(){
-        return this->value;
-    }
-    void updateValue(int value){
-        this->value = value;
-    }
-} Node;
-
-class DLL {
+};
+class DoublyLinkedList {
     Node *head;
     Node *tail;
 
     public:
-    DLL(){
-        head = new Node(-1,-1);
-        tail = new Node(-1,-1);
-        head->right = tail;
-        tail->left = head;
+    DoublyLinkedList(){
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head->next = tail;
+        tail->prev = head;
     }
 
-    Node* getFirstNode(){
-        return head->right != tail ? head->right : NULL;
+    void insert(Node *newNode){
+        newNode->prev = head;
+        newNode->next = head->next;
+        head->next->prev = newNode;
+        head->next = newNode;
     }
 
-    Node* getLastNode(){
-        return tail->left != head ? tail->left : NULL;
+    int deleteLast(){
+        Node *deleted = tail->prev;
+        tail->prev = deleted->prev;
+        deleted->prev->next = tail;
+
+        int deletedKey = deleted->key;
+        delete deleted;
+        return deletedKey;
     }
 
-    Node* detachNode(Node *node){
-        node->left->right = node->right;
-        node->right->left = node->left;
-        node->left = NULL;
-        node->right = NULL;
-        return node;
-    }
-
-    void removeNode(Node *node){
-        detachNode(node);
-        delete node;
-    }
-
-    int removeLastNode(){
-        int removedKey = -1;
-        Node *lastNode = getLastNode();
-        if(lastNode){
-            removedKey = lastNode->getKey();
-            removeNode(lastNode);
-        }
-        return removedKey;
-    }
-
-    void addNodeToBeginning(Node *node){
-        node->right = head->right;
-        node->left = head;
-        head->right->left = node;
-        head->right = node;
+    void placeAtHead(Node* node){
+        if(node->prev != nullptr)
+            node->prev->next = node->next;
+        if(node->next != nullptr)
+            node->next->prev = node->prev;
+        
+        node->prev = nullptr;
+        node->next = nullptr;
+        insert(node);
     }
 };
-
-
 class LRUCache {
-private:
-    unordered_map<int, Node*> cached;
-    DLL ordered;
-    int capacity;
-
-    void removeLeastRecent(){
-        int removedKey = ordered.removeLastNode();
-        if(removedKey != -1){
-            // printf("Remove %d \n", removedKey);
-            cached.erase(removedKey);
-        }
-    }
-
-    Node* use(int key){
-        if(cached.find(key) == cached.end())
-            return NULL;
-
-        // printf("Use %d \n", key);
-        Node* targetNode = cached[key];
-        ordered.detachNode(targetNode);
-        ordered.addNodeToBeginning(targetNode);
-        return targetNode;
-    }
-
 public:
+    int capacity;
+    DoublyLinkedList dll;
+    unordered_map<int, Node*> cache;
+
+    public:
     LRUCache(int capacity) {
-        this->capacity=capacity;
+        this->capacity = capacity;
     }
     
     int get(int key) {
-        if(cached.find(key) != cached.end()){
-            Node *existingNode = use(key);
-            return existingNode->getValue();
-        }
-        return -1;
+        if(cache.find(key) == cache.end())
+            return -1;
+        dll.placeAtHead(cache[key]);
+        return cache[key]->value;
     }
     
     void put(int key, int value) {
-        if(cached.find(key) == cached.end()){
-            // Whole point of capacity is to have max limit on nodes we can store
-            if(cached.size() == capacity)
-                removeLeastRecent();
-            Node *newNode = new Node(key, value);
-            ordered.addNodeToBeginning(newNode);
-            cached[key] = newNode;
+        if(cache.find(key) == cache.end()){
+            if(cache.size() == capacity){
+                cache.erase(dll.deleteLast());
+            }
+            cache[key] = new Node(key, value);
         } else {
-            Node *existingNode = use(key);
-            existingNode->updateValue(value);
+            cache[key]->value = value;
         }
+
+        dll.placeAtHead(cache[key]);
     }
 };
 
