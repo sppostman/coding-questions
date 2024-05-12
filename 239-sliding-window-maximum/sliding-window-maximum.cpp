@@ -3,26 +3,44 @@ public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         int n = nums.size();
         vector<int> res;
+        deque<int> incr;
 
-        priority_queue<pair<int,int>> pq;
-        for(int i=0; i<k; i++){
-            pq.push({nums[i], i});
-        }
-        res.push_back(pq.top().first);
+        for(int i=0; i<n; i++){
+            int left = i-k+1;
+            while(incr.size() && incr.front() < left)
+                incr.pop_front();
+            while(incr.size() && nums[incr.back()] <= nums[i])
+                incr.pop_back();
 
-        int i=0, j=k-1;
-        while(j<n-1){
-            i++;
-            while(pq.size() && pq.top().second < i)
-                pq.pop();
+            incr.push_back(i);
 
-            j++;
-            pq.push({nums[j], j});
-            res.push_back(pq.top().first);
+            if(i>=k-1)
+                res.push_back(nums[incr.front()]);
         }
         return res;
+
+        // O(nlogn)
+        // vector<int> res;
+        // priority_queue<pair<int,int>> pq;
+        // for(int i=0; i<k; i++){
+        //     pq.push({nums[i], i});
+        // }
+        // res.push_back(pq.top().first);
+
+        // int i=0, j=k-1;
+        // while(j<n-1){
+        //     i++;
+        //     while(pq.size() && pq.top().second < i)
+        //         pq.pop();
+
+        //     j++;
+        //     pq.push({nums[j], j});
+        //     res.push_back(pq.top().first);
+        // }
+        // return res;
         
 
+        // O(nk)
         // int i=0;
         // int mx = nums[0];
         
