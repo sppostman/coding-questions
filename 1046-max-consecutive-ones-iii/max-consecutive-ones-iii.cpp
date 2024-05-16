@@ -6,11 +6,13 @@ public:
         int flipped = 0;
         int mxOnes = 0;
         while(j<n){
-            while(nums[j]==0 && flipped == k){
+            flipped += nums[j]==0;
+
+            while(flipped > k){
                 flipped -= nums[i] == 0;
                 i++;
             }
-            flipped += nums[j]==0;
+            
             mxOnes = max(mxOnes, j-i+1);
             j++;
         }
