@@ -1,19 +1,15 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        vector<int> prev(3, -1);
-
-        int n=s.size();
+        int n = s.size();
+        vector<int> freq(3, -1);
         int count = 0;
 
+        // aabaabbbc
         for(int i=0; i<n; i++){
-            int c = s[i]-'a';
-            prev[c] = i;
-            // Can omit since min() => -1, & -1+1 => 0
-            // if(prev[0] != -1 && prev[1] != -1 && prev[2] != -1){
-                int minimalWindowLeft = min({ prev[0], prev[1], prev[2]});
-                count += minimalWindowLeft+1;
-            // }
+            freq[s[i]-'a'] = i;
+            int minWindowLeft = min({freq[0], freq[1], freq[2]});
+            count += minWindowLeft+1;
         }
 
         return count;
