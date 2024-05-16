@@ -12,14 +12,17 @@ public:
             freq[c]++;
             maxFreq = max(maxFreq, freq[c]);
 
-            while(j-i+1 - maxFreq > k){
+            if(j-i+1 - maxFreq > k){
                 freq[s[i]-'A']--;
                 i++;
-                maxFreq = 0;
-                for(int x=0; x<26; x++)
-                    maxFreq = max(maxFreq, freq[x]);
-            }
 
+                // len - maxFreq > k, here if maxFreq reduces, we
+                // won't get answer with that anyways
+                // maxFreq = 0;
+                // for(int x=0; x<26; x++)
+                //     maxFreq = max(maxFreq, freq[x]);
+            }
+            
             maxLen = max(maxLen, j-i+1);
             j++;
         }
