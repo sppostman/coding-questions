@@ -4,14 +4,14 @@ public:
         int i=0;
         int n = nums.size();
 
-        if(n == 1)  return 0;
-
-        int count = 1;
+        int count = 0;
 
         while(i < n-1){
+            count++;
+
             if(i+nums[i] >= n-1)
                 return count;
-            
+
             int maxReachMaker = i;
             for(int j=i+1; j<n && j<=i+nums[i]; j++){
                 if(j+nums[j] >= maxReachMaker+nums[maxReachMaker]){
@@ -19,7 +19,6 @@ public:
                 }
             }
             i = maxReachMaker;
-            count++;
         }
         
         return count;
