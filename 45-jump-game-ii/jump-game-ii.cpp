@@ -12,11 +12,10 @@ public:
             if(i+nums[i] >= n-1)
                 return count;
             
-            int maxReachMaker = -1;
+            int maxReachMaker = i;
             for(int j=i+1; j<n && j<=i+nums[i]; j++){
-                if(maxReachMaker == -1 || j+nums[j] >= maxReachMaker+nums[maxReachMaker]){
+                if(j+nums[j] >= maxReachMaker+nums[maxReachMaker]){
                     maxReachMaker = j;
-                    printf("Matchmaker is %d\n", maxReachMaker);
                 }
             }
             i = maxReachMaker;
