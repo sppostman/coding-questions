@@ -1,31 +1,31 @@
 class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
-        stack<int> rights;
-        vector<int> safe;
+        int n = asteroids.size();
+        vector<int> result;
+        stack<int> st;
 
         for(int ast : asteroids){
-            if(ast >= 0){
-                rights.push(ast);
-            } else {
-                int size = -ast;
-                while(rights.size() && rights.top() < size)
-                    rights.pop();
-                
-                if(rights.empty())
-                    safe.push_back(ast);
-                else if(rights.top() == size)
-                    rights.pop();
+            if(ast >= 0)
+                st.push(ast);
+            else {
+                while(st.size() && abs(st.top()) < abs(ast)){
+                    st.pop();
+                }
+                if(st.empty())
+                    result.push_back(ast);
+                else if(st.top() == -ast)
+                    st.pop();
             }
         }
 
-        safe.resize(safe.size() + rights.size());
-        int placeAt = safe.size()-1;
-        while(rights.size()){
-            safe[placeAt--] = rights.top();
-            rights.pop();
+        result.resize(result.size() + st.size());
+        int j = result.size()-1;
+        while(st.size() > 0){
+            result[j--] = st.top();
+            st.pop();
         }
 
-        return safe;
+        return result;
     }
 };
