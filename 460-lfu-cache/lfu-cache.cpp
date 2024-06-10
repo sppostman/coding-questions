@@ -1,104 +1,110 @@
 class Node {
+    int key;
+    int value;
+    
     public:
-    int val;
-    Node *prev, *next;
-    Node(int _val){
-        val = _val;
-        prev = nullptr;
-        next = nullptr;
+    Node *left;
+    Node *right;
+
+    Node(int key, int value){
+        this->key = key;
+        this->value = value;
+        this->left = nullptr;
+        this->right = nullptr;
+    }
+    int getKey(){
+        return this->key;
+    }
+    int getValue(){
+        return this->value;
+    }
+    void updateValue(int value){
+        this->value = value;
     }
 };
-class LinkedHashSet {
-    unordered_map<int, Node*> elements;
-    Node *head, *tail;
-
+class DoublylinkedList {
+    Node *head;
+    Node *tail;
     public:
-    LinkedHashSet(){
-        head = new Node(-1);
-        tail = new Node(-1);
-        head->next = tail;
-        tail->prev = head;
+    DoublylinkedList(){
+        head = new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head->right = tail;
+        tail->left = head;
     }
-    void insert(int x){
-        Node *newNode = new Node(x);
-        elements[x] = newNode;
-        newNode->prev = tail->prev;
-        newNode->next = tail;
-        tail->prev->next = newNode;
-        tail->prev = newNode;
+    Node* addNode(int key, int value){
+        Node *newNode = new Node(key, value);
+        tail->left->right = newNode;
+        newNode->left = tail->left;
+        tail->left = newNode;
+        newNode->right = tail;
+        return newNode;
     }
-    void erase(int x){
-        if(elements.find(x) == elements.end())
-            return;
-
-        Node* removed = elements[x];
-        removed->next->prev = removed->prev;
-        removed->prev->next = removed->next;
-        elements.erase(x);
-        delete removed;
-    }
-    int pop_front(){
-        if(head->next == tail)
+    int removeFirstNode(){
+        if(isEmpty())
             return -1;
-        int popped = head->next->val;
-        erase(popped);
-        return popped;
+        Node *removed = head->right;
+        int removedKey = removed->getKey();
+        removed->right->left = head;
+        head->right = removed->right;
+        delete removed;
+        return removedKey;
     }
-    int size(){
-        return elements.size();
+    void removeNode(Node *node){
+        node->left->right = node->right;
+        node->right->left = node->left;
+        delete node;
+    }
+    bool isEmpty(){
+        return head->right == tail;
     }
 };
 
 class LFUCache {
 public:
-    unordered_map<int, int> keyVal;
-    unordered_map<int, int> keyCount;
-    unordered_map<int, LinkedHashSet> freqKeys;
-    int capacity;
-    int min;
+    unordered_map<int,pair<Node*,int>> keyNodeCounter;
+    unordered_map<int, DoublylinkedList> countedKeys;
+    int capacity = 0;
+    int takenKeys = 0;
+    int minCount = 0;
 
-    LFUCache(int _capacity) {
-        capacity = _capacity;
-        min = -1;
-    }
-
-    void useKey(int key){
-        freqKeys[keyCount[key]].erase(key);
-        if(min == keyCount[key] && freqKeys[keyCount[key]].size() == 0)
-            min++;
-        keyCount[key]++;
-        freqKeys[keyCount[key]].insert(key);
+    LFUCache(int capacity) {
+        this->capacity = capacity;    
     }
     
     int get(int key) {
-        if(keyVal.find(key) == keyVal.end())
+        if(keyNodeCounter.find(key) == keyNodeCounter.end())
             return -1;
-        useKey(key);
-        return keyVal[key];
+        Node *currNode = keyNodeCounter[key].first;
+        int value = currNode->getValue();
+        int count = keyNodeCounter[key].second;
+        countedKeys[count].removeNode(currNode);
+
+        if(minCount == count && countedKeys[count].isEmpty()){
+            minCount++;
+        }
+        count++;
+        keyNodeCounter[key] = { countedKeys[count].addNode(key, value), count };
+        return value;
     }
     
     void put(int key, int value) {
-        if(capacity == 0)
-            return;
-
-        if(keyVal.find(key) != keyVal.end()){
-            keyVal[key] = value;
-            useKey(key);
+        if(keyNodeCounter.find(key) != keyNodeCounter.end()){
+            keyNodeCounter[key].first->updateValue(value);
+            get(key);
             return;
         }
 
-        if(keyVal.size() == capacity){
-            // Remove least freq
-            int removedKey = freqKeys[min].pop_front();
-            
-            // Don't touch min, as its going to be set 1 anyways
-            keyCount.erase(removedKey);
-            keyVal.erase(removedKey);
+        if(takenKeys == capacity){
+            int removedKey = countedKeys[minCount].removeFirstNode();
+            keyNodeCounter.erase(removedKey);
+            takenKeys--;
+            // minCount need not be worried, as its going to be 1 after insertion of new key
         }
 
-        min = 1;
-        keyVal[key] = value;
-        useKey(key);
+        keyNodeCounter[key] = {countedKeys[1].addNode(key, value), 1};
+        minCount = 1;
+        takenKeys++;
     }
 };
 
