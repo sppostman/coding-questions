@@ -11,18 +11,18 @@
  */
 class Solution {
 public:
-    int find(TreeNode* root, int &maxsum){
-        if(!root)   return 0;
+    int dfs(TreeNode* root, int &maxPath) {
+        if(!root)
+            return 0;
+        int l = dfs(root->left, maxPath);
+        int r = dfs(root->right, maxPath);
 
-        int lpart = max(find(root->left, maxsum), 0);
-        int rpart = max(find(root->right, maxsum), 0);
-
-        maxsum = max(lpart + rpart + root->val, maxsum);
-        return max(lpart + root->val, rpart + root->val);
+        maxPath = max({maxPath, l+r+root->val, root->val, l+root->val, r+root->val});
+        return max({root->val, l+root->val, r+root->val});
     }
     int maxPathSum(TreeNode* root) {
-        int maxsum = root->val;
-        find(root, maxsum);
-        return maxsum;
+        int maxPath = INT_MIN;
+        dfs(root, maxPath);
+        return maxPath;
     }
 };
