@@ -26,8 +26,21 @@ public:
         return count;
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        TreeNode* lca = nullptr;
-        findCount(root, p, q, lca);
-        return lca;
+        // TreeNode* lca = nullptr;
+        // findCount(root, p, q, lca);
+        // return lca;
+
+        if(!root || root==p || root==q)
+            return root;
+
+        auto l = lowestCommonAncestor(root->left, p, q);
+        auto r = lowestCommonAncestor(root->right, p, q);
+
+        if(!l)
+            return r;
+        else if(!r)
+            return l;
+        else
+            return root;
     }
 };
