@@ -2,55 +2,24 @@ class Solution {
 public:
     int trap(vector<int>& height) {
         int n = height.size();
+        int water = 0;
 
-        int trapped = 0;
-        int i = 1, j = n-1;
-        int mxI = height[0];
-        int mxJ = height[n-1];
+        int maxL = 0, maxR = 0;
+        int l = 0, r = n-1;
 
-        while(i <= j){
-            if(mxI <= mxJ){
-                trapped += max(mxI - height[i], 0);
-                mxI = max(mxI, height[i]);
-                i++;
+        while(l<=r){
+            maxL = max(height[l], maxL);
+            maxR = max(height[r], maxR);
+
+            if(height[l] <= height[r]){
+                water += min(maxL, maxR) - height[l];
+                l++;
             } else {
-                trapped += max(mxJ - height[j], 0);
-                mxJ = max(mxJ, height[j]);
-                j--;
+                water += min(maxL, maxR) - height[r];
+                r--;
             }
         }
-        return trapped;
 
-        // // space - O(n), time - O(n)
-        // int trapped = 0;
-        // int pmax = height[0];
-        // vector<int> smax(n, 0);
-        // smax[n-1] = height[n-1];
-        
-        // for(int i=n-2; i>=0; i--)
-        //     smax[i] = max(smax[i+1], height[i]);
-        
-        // for(int i=1; i<n-1; i++){
-        //     trapped += max(min(pmax, smax[i+1]) - height[i], 0);
-        //     pmax = max(pmax, height[i]);
-        // }
-        // return trapped;
-        
-        // // space - O(2n), time - O(n)
-        // int trapped = 0;
-        // vector<int> pmax(n, 0);
-        // vector<int> smax(n, 0);
-        // pmax[0] = height[0];
-        // smax[n-1] = height[n-1];
-
-        // for(int i=1; i<n; i++)
-        //     pmax[i] = max(pmax[i-1], height[i]);
-        
-        // for(int i=n-2; i>=0; i--)
-        //     smax[i] = max(smax[i+1], height[i]);
-        
-        // for(int i=1; i<n-1; i++)
-        //     trapped += max(min(pmax[i-1], smax[i+1]) - height[i], 0);
-        // return trapped;
+        return water;
     }
 };
