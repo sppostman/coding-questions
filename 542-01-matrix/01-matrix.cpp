@@ -1,38 +1,45 @@
 class Solution {
 public:
-    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int n=mat.size(), m=mat[0].size();
-        vector<vector<int>> dist(n, vector<int>(m));
-        queue<pair<int,int>> rem;
+    vector<vector<int>> updateMatrix(vector<vector<int>>& og) {
+        vector<vector<int>> mat = og;
+        int m = mat.size(), n=mat[0].size();
+        vector<vector<int>> dist(m, vector<int>(n, 0));
+        
+        queue<pair<int,int>> toVisit;
 
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(mat[i][j] == 0){
-                    dist[i][j] = 0;
-                    rem.push({i,j});
-                }
-                else
-                    dist[i][j] = 1e7;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(mat[i][j] == 0)
+                    toVisit.push({ i, j });
             }
         }
 
         int di[] = {0,0,-1,1};
         int dj[] = {-1,1,0,0};
-        while(rem.size()){
-            int i = rem.front().first;
-            int j = rem.front().second;
-            rem.pop();
 
-            for(int d=0; d<4; d++){
-                int goi = i+di[d];
-                int goj = j+dj[d];
+        int currTime = 0;
+        while(toVisit.size()){
+            currTime++;
 
-                if(goi>=0 && goj>=0 && goi<n && goj<m && dist[i][j]+1 < dist[goi][goj]){
-                    dist[goi][goj] = dist[i][j]+1;
-                    rem.push({ goi, goj });
+            int pendingAtLevel = toVisit.size();
+            while(pendingAtLevel--){
+                int ui = toVisit.front().first;
+                int uj = toVisit.front().second;
+                toVisit.pop();
+
+                for(int d=0; d<4; d++){
+                    int vi = ui + di[d];
+                    int vj = uj + dj[d];
+
+                    if(vi>=0 && vi<m && vj>=0 && vj<n && mat[vi][vj] == 1){
+                        mat[vi][vj] = 0;
+                        dist[vi][vj] = currTime;
+                        toVisit.push({ vi, vj });
+                    }
                 }
             }
         }
+
         return dist;
     }
 };
