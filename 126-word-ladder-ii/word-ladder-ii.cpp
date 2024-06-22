@@ -138,18 +138,10 @@ public:
         int minDist = it.first;
         map<string, int> bestPath = it.second;
 
-        cout<<minDist<<endl;
-        cout<<bestPath["hit"]<<endl;
-        cout<<bestPath["hot"]<<endl;
-        cout<<bestPath["dot"]<<endl;
-        cout<<bestPath["lot"]<<endl;
-        cout<<bestPath["dog"]<<endl;
-        cout<<bestPath["log"]<<endl;
-        cout<<bestPath["cog"]<<endl;
-
         dfs(endWord, beginWord, minDist, bestPath, allowed, currPath, result);
         return result;
     }
+
     // TLE
     // vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
     //     int n = beginWord.size();
