@@ -45,16 +45,6 @@ public:
         for(int i=0; i<wordList.size(); i++){
             prepareAdjList(wordList[i], i, strs, adjList);
         }
-        // for(int i=0; i<wordList.size(); i++){
-        //     if(wordList[i] == endWord)
-        //         target = i;
-        //     for(int j=i; j<wordList.size(); j++){
-        //         if(areAdj(wordList[i], wordList[j])){
-        //             adjList[i].push_back(j);
-        //             adjList[j].push_back(i);
-        //         }
-        //     }
-        // }
 
         if(target == -1)
             return {0, wordMinDist};
@@ -66,7 +56,6 @@ public:
         vis[src] = true;
         rem.push(src);
         wordMinDist[wordList[src]] = 0;
-
 
         int currDist =0;
         while(rem.size()){
@@ -100,7 +89,6 @@ public:
     ){
         currPath.push_back(curr);
 
-        cout<<curr<<endl;
         if(curr == dest){
             vector<string> tmpRev = currPath;
             reverse(tmpRev.begin(), tmpRev.end());
@@ -116,8 +104,6 @@ public:
                     
                     if(dist-1 == bestPath[curr])
                         dfs(curr, dest, dist-1, bestPath, allowed, currPath, result);
-                    
-
                 }
                 curr[i] = og;
             }
