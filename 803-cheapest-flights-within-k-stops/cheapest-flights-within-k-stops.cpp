@@ -11,10 +11,7 @@ public:
         rem.push({ src, 0 });
         
         int stops = 0;
-        while(rem.size()){
-            if(stops > k){
-                return minCost[dst] == INT_MAX ? -1 : minCost[dst];
-            }
+        while(stops <= k && rem.size()){
             stops++;
 
             int thisLevel = rem.size();
