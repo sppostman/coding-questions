@@ -1,47 +1,41 @@
 class Solution {
 public:
-    int bestroute(int n, vector<pair<int,int>> graph[n], vector<bool> &vis, int node, int dst, int used, int steps){
-        if(node == dst)
-            return used;
-        vis[node] = true;
-        int bestRoute = -1;
-        for(const auto &[next, cost] : graph[node]){
-            if(!vis[next] && steps>=0){
-                // printf("%d to %d (%d)\n",node,next, used+cost);
-                int routeCost = bestroute(n, graph, vis, next, dst, used+cost, steps-1);
-                if(routeCost != -1 && (routeCost<bestRoute || bestRoute==-1))
-                    bestRoute = routeCost;
-            }
-        }
-        vis[node] = false;
-        return bestRoute;
-    }
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        vector<pair<int,int>> graph[n];
-        vector<bool> vis(n, false);
-        for(auto flight : flights){
-            graph[flight[0]].push_back({flight[1], flight[2]});
+        vector<pair<int,int>> adj[n];
+        for(auto f : flights){
+            adj[f[0]].push_back({ f[1], f[2] });
         }
-        // return bestroute(n, graph, vis, src, dst, 0, k);
+        vector<int> minCost(n, INT_MAX);
+        queue<pair<int,int>> rem;
+        minCost[src] = 0;
+        rem.push({ src, 0 });
+        
+        int stops = 0;
+        while(rem.size()){
+            if(stops > k){
+                return minCost[dst] == INT_MAX ? -1 : minCost[dst];
+            }
+            stops++;
 
-        queue<pair<int, pair<int,int>>> travel; // {next, {costed,steps}}
-        vector<int> dist(n, 1e9);
-        dist[src]=0;
-        travel.push({src, {0, 0}});
-        while(travel.size()){
-            const auto [node, weights] = travel.front();
-            const auto [costed, steps] = weights;
-            travel.pop();
+            int thisLevel = rem.size();
+            while(thisLevel--){
+                auto it = rem.front();
+                rem.pop();
+                int u = it.first;
+                int uCost = it.second;
 
-            for(const auto &[next, cost] : graph[node]){
-                // printf("%d to %d __ %d (%d)\n",node,next,steps, costed+cost);
-                int nextCost = cost+costed;
-                if(steps<=k && nextCost < dist[next]){
-                    dist[next] = nextCost;
-                    travel.push({next, {nextCost, steps+1}});
+                for(auto nb : adj[u]){
+                    int v = nb.first;
+                    int goCost = nb.second;
+
+                    if(uCost+goCost < minCost[v]){
+                        minCost[v] = uCost+goCost;
+                        rem.push({ v, minCost[v] });
+                        cout<<v<<","<<minCost[v];
+                    }
                 }
             }
         }
-        return dist[dst] == 1e9 ? -1 : dist[dst];
+        return minCost[dst] == INT_MAX ? -1 : minCost[dst];
     }
 };
