@@ -7,11 +7,9 @@ public:
             adj[f[0]].push_back({ f[1], f[2] });
         }
 
-        vector<int> minTime(n+1, INT_MAX);
-        minTime[0] = 0;
-
+        vector<int> minTime(n, INT_MAX);
         queue<pair<int,int>> rem;
-        minTime[k] = 0;
+        minTime[k-1] = 0;
         rem.push({ k, 0 });
 
         int visited = 1;
@@ -25,12 +23,12 @@ public:
             for(auto nb : adj[u]){
                 int v = nb.first;
                 int goTime = nb.second;
-                if(minTime[v] == INT_MAX)
+                if(minTime[v-1] == INT_MAX)
                     visited++;
 
-                if(uTime+goTime < minTime[v]){
-                    minTime[v] = uTime+goTime;
-                    rem.push({ v, minTime[v] });
+                if(uTime+goTime < minTime[v-1]){
+                    minTime[v-1] = uTime+goTime;
+                    rem.push({ v, minTime[v-1] });
                 }
             }
         }
