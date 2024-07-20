@@ -8,8 +8,10 @@ public:
 
             ans = min(ans, nums[m]);
 
-            // 3 4 5 6 7 0 1 2 3 4 
-            // 5 7 0 1 2 3 4
+            // 3 4 5 6 7 0 1 2 3 4
+
+            if(nums[l] <= nums[r])
+                return min(nums[l], ans);
             
             if(nums[l] <= nums[m]){
                 ans = min(ans, nums[l]);
