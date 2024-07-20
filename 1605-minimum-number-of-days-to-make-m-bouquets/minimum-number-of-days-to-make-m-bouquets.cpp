@@ -9,12 +9,15 @@ public:
                 if(takenFlowers == k){
                     bouqets++;
                     takenFlowers = 0;
+
+                    if(bouqets == m)
+                        return true;
                 }
             } else {
                 takenFlowers = 0;
             }
         }
-        return bouqets >= m;
+        return false;
     }
     int minDays(vector<int>& bloomDay, int m, int k) {
         int l = *min_element(bloomDay.begin(), bloomDay.end());
