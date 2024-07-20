@@ -2,8 +2,9 @@ class Solution {
 public:
     bool works(vector<int>& nums, int threshold, int divisor){
         int sum = 0;
-        for(int n : nums){
-            sum += ceil(n*1.0/divisor);
+        for(int el : nums){
+            // sum += ceil(el/divisor);
+            sum += (el+divisor-1) / divisor;
             if(sum > threshold)
                 return false;
         }
