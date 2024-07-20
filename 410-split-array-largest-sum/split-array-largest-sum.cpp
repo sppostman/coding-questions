@@ -32,6 +32,6 @@ public:
                 l = m+1;
             }
         }
-        return ans > mx ? -1 : ans;
+        return l > mx ? -1 : l;
     }
 };
