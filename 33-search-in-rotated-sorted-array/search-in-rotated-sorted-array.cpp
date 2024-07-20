@@ -1,22 +1,22 @@
 class Solution {
 public:
-    int search(vector<int>& arr, int x) {
-        int l = 0, r = arr.size()-1;
-
-        while(l<=r){
-            int mid = l+(r-l)/2;
-
-            if(arr[mid] == x)   
-                return mid;
-            if(
-                (arr[l]<=arr[mid] && arr[l] <= x && x <= arr[mid]) ||
-                (arr[l]>arr[mid] && (x <= arr[mid] || x>= arr[l]))
-            )
-                r = mid-1;
-            else
-                l = mid+1;
-        }
+    int search(vector<int>& nums, int target) {
+        int l=0, r=nums.size()-1;
         
+        while(l<=r){
+            int m = l+(r-l)/2;
+            if(nums[m] == target)
+                return m;
+
+            if(
+                (nums[l] <= nums[m] && nums[l] <= target && target <= nums[m]) ||
+                (nums[l] > nums[m] && (target >= nums[l] || target < nums[m]))
+            ){
+                r = m-1;
+            } else {
+                l = m+1;
+            }
+        }
         return -1;
     }
 };
