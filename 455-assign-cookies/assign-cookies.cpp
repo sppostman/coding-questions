@@ -4,16 +4,13 @@ public:
         sort(s.begin(), s.end());
         sort(g.begin(), g.end());
 
-        int fulfilled = 0;
-        int c = 0;
-        for(auto greed : g){
-            while(c<s.size() && greed > s[c])
-                c++;
-            if(c==s.size())
-                return fulfilled;
-            c++;
-            fulfilled++;
+        int i = 0, j = 0;
+        while(j < s.size() && i<g.size()){
+            if(s[j] >= g[i]){
+                i++;
+            } 
+            j++;
         }
-        return fulfilled;
+        return i;
     }
 };
