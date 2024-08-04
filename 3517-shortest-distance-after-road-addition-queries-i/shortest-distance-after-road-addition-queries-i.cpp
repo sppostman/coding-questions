@@ -9,8 +9,8 @@ public:
             int j = rem.top().second;
             rem.pop();
 
-            // if(j == v)
-            //     return dist;
+            if(j == v)
+                return dist;
             
             for(int nb : adj[j]){
                 if(dist+1 < mindist[nb]){
