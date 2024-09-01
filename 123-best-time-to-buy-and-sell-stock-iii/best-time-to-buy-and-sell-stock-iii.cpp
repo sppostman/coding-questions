@@ -2,26 +2,36 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> ahead(2, vector<int>(3, 0));
-        vector<vector<int>> dp(2, vector<int>(3, 0));
+
+        // dp[i][0][0] = prices[i] + dp[i+1][1][1]
+        // dp[i][0][1] = prices[i] + dp[i+1][1][2]
+        // dp[i][0][2] = 0
+
+        // dp[i][1][0] = -prices[i] + dp[i+1][0][0]
+        // dp[i][1][1] = -prices[i] + dp[i+1][0][1]
+        // dp[i][1][2] = 0
+
+        vector<vector<int>> nextDp(2, vector<int>(3, 0));
+        vector<vector<int>> currDp(2, vector<int>(3, 0));
 
         for(int i=n-1; i>=0; i--){
             for(int buy=0; buy<2; buy++){
-                for(int cap=1; cap<3; cap++){
-                    if(buy)
-                        dp[buy][cap] = max(
-                            ahead[buy][cap],
-                            -prices[i] + ahead[0][cap]
+                for(int cap=0; cap<2; cap++){
+                    if(buy){
+                        currDp[1][cap] = max(
+                            nextDp[1][cap],
+                            -prices[i] + nextDp[0][cap]
                         );
-                    else
-                        dp[buy][cap] = max(
-                            ahead[buy][cap],
-                            prices[i] + ahead[1][cap-1]
+                    } else {
+                        currDp[0][cap] = max(
+                            nextDp[0][cap],
+                            prices[i] + nextDp[1][cap+1]
                         );
+                    }
                 }
             }
-            ahead = dp;
+            nextDp = currDp;
         }
-        return ahead[1][2];
+        return nextDp[1][0];
     }
 };
