@@ -18,7 +18,6 @@ public:
     int maxIncreasingSubarrays(vector<int>& nums) {
         int l = 1, r = nums.size()/2;
         int res = 1;
-        if(nums.size()==2)  return 1;
         while(l<=r){
             int k = l+(r-l)/2;
             if(hasIncreasingSubarrays(nums, k)){
