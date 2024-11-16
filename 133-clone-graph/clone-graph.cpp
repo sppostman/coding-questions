@@ -21,39 +21,25 @@ public:
 
 class Solution {
 public:
-    Node* dfsClone(Node *node, vector<bool> &vis, vector<Node*> &nodes){
-        if(node == NULL)
-            return NULL;
-        // printf("At %d \n", node->val);
-
-        Node *curr = nodes[node->val];
-        if(curr == NULL){
-            curr = new Node(node->val);
-            nodes[node->val] = curr;
+    Node* cloneit(Node* node, Node* parent, vector<bool> &vis, map<int, Node*> &newgraph){
+        if(node == nullptr)
+            return nullptr;
+        vis[node->val] = true;
+        if(newgraph.count(node->val)==0){
+            newgraph[node->val] = new Node(node->val);
         }
-        vis[node->val]=true;
-
-        for(Node* neighbor : node->neighbors){
-            if(!vis[neighbor->val]){
-                // printf("(from %d) go to %d\n",node->val,neighbor->val);
-                curr->neighbors.push_back(
-                    dfsClone(neighbor,vis,nodes)
-                );
-            }else{
-                curr->neighbors.push_back(nodes[neighbor->val]);
-                // printf("(from %d), already done %d\n",
-                // node->val,neighbor->val);
-            }
+        Node* newNode = newgraph[node->val];
+        for(auto v : node->neighbors){
+            if(!vis[v->val])
+                cloneit(v, node, vis, newgraph);
         }
-
-
-        return curr;
+        for(auto v : node->neighbors)
+            newNode->neighbors.push_back(newgraph[v->val]);
+        return newNode;
     }
-
     Node* cloneGraph(Node* node) {
-        // map<int, Node*> nodes;
-        vector<Node*> nodes(105, NULL);
+        map<int, Node*> newgraph;
         vector<bool> vis(105);
-        return dfsClone(node, vis, nodes);
+        return cloneit(node, nullptr, vis, newgraph);
     }
 };
