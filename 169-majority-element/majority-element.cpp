@@ -1,79 +1,18 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        // Naive - O(n^2) for each element, travel ahead and count
-        // Better - Hash map of counts o(n) time & space
-        // Optimal - Moore - O(n)
-
-        int n=nums.size();
-        int el = nums[0], count = 0;
-        for(int n : nums){
-            if(n == el)
-                count++;
-            else
-                count--;
-            if(count < 0){
-                el=n;
-                count=1;
+        int currel = 1e9+5, currCount = 0;
+        for(auto el : nums){
+            if(el == currel)
+                currCount++;
+            else {
+                currCount--;
+                if(currCount < 0){
+                    currel = el;
+                    currCount = 1;
+                }
             }
         }
-        if(count > n/2)
-            return el;
-        count = 0;
-        for(int n:nums)
-            if(n==el)
-                count++;
-        if(count > n/2)
-            return el;
-        return -1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // int n=nums.size();
-        // int el=-1;
-        // int count=0;
-        // for(int n:nums){
-        //     if(n==el)
-        //         count++;
-        //     else if(count == 0){
-        //         el=n;
-        //         count=1;
-        //     } else {
-        //         count--;
-        //     }
-        // }
-        // if(count > n/2)
-        //     return el;
-        // count=0;
-        // for(int n:nums){
-        //     if(n==el){
-        //         count++;
-        //         if(count > n/2){
-        //             return el;
-        //         }
-        //     }
-        // }
-        // if(count > n/2){
-        //     return el;
-        // }
-        // return -1;
+        return currel;
     }
 };
