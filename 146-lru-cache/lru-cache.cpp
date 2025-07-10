@@ -1,84 +1,97 @@
-class Node {
-    public:
+class DLLNode {
+public:
     int key;
     int value;
-    Node *prev, *next;
-    Node(int _key, int _value){
-        this->key = _key;
-        this->value = _value;
-        this->prev = nullptr;
-        this->next = nullptr;
+    DLLNode *left;
+    DLLNode *right;
+    
+    DLLNode(int k, int v){
+        this->key = k;
+        this->value = v;
     }
 };
-class DoublyLinkedList {
-    Node *head;
-    Node *tail;
 
-    public:
-    DoublyLinkedList(){
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        head->next = tail;
-        tail->prev = head;
-    }
+class DLL {
+private:
+    DLLNode *head;
+    DLLNode *tail;
 
-    void insert(Node *newNode){
-        newNode->prev = head;
-        newNode->next = head->next;
-        head->next->prev = newNode;
-        head->next = newNode;
-    }
-
-    int deleteLast(){
-        Node *deleted = tail->prev;
-        tail->prev = deleted->prev;
-        deleted->prev->next = tail;
-
-        int deletedKey = deleted->key;
-        delete deleted;
-        return deletedKey;
-    }
-
-    void placeAtHead(Node* node){
-        if(node->prev != nullptr)
-            node->prev->next = node->next;
-        if(node->next != nullptr)
-            node->next->prev = node->prev;
-        
-        node->prev = nullptr;
-        node->next = nullptr;
-        insert(node);
-    }
-};
-class LRUCache {
 public:
-    int capacity;
-    DoublyLinkedList dll;
-    unordered_map<int, Node*> cache;
+    DLL(){
+        head = new DLLNode(-1, -1);
+        tail = new DLLNode(-1, -1);
+        head->right = tail;
+        tail->left = head;
+    }
 
-    public:
+    void append(DLLNode *node){
+        node->left = tail->left;
+        node->left->right = node;
+        node->right = tail;
+        tail->left = node;
+    }
+
+    void detach(DLLNode *node){
+        node->left->right = node->right;
+        node->right->left = node->left;
+        node->left = nullptr;
+        node->right = nullptr;
+    }
+
+    bool isEmpty(){
+        return head->right == tail || tail->left == head;
+    }
+
+    DLLNode* popFirst(){
+        if(isEmpty())
+            return nullptr;
+        DLLNode* removed = head->right;
+        head->right = removed->right;
+        removed->right->left = head;
+        return removed;
+    }
+};
+
+class LRUCache {
+private:
+    int size;
+    int capacity;
+    DLL itemList;
+    map<int, DLLNode*> itemSet;
+public:
     LRUCache(int capacity) {
         this->capacity = capacity;
+        this->size = 0;
     }
     
     int get(int key) {
-        if(cache.find(key) == cache.end())
+        auto it = itemSet.find(key);
+        if(it == itemSet.end())
             return -1;
-        dll.placeAtHead(cache[key]);
-        return cache[key]->value;
+        itemList.detach(it->second);
+        itemList.append(it->second);
+        return it->second->value;
     }
     
     void put(int key, int value) {
-        if(cache.find(key) == cache.end()){
-            if(cache.size() == capacity){
-                cache.erase(dll.deleteLast());
-            }
-            cache[key] = new Node(key, value);
-        } else {
-            cache[key]->value = value;
-        }
+        auto it = itemSet.find(key);
+        DLLNode *target;
+        if(it == itemSet.end()){
+            target = new DLLNode(key, value);
 
-        dll.placeAtHead(cache[key]);
+            if(this->size == this->capacity){
+                auto removed = itemList.popFirst();
+                if(removed != nullptr)
+                    itemSet.erase(removed->key);
+            } 
+            else this->size++;
+        } else {
+            target = it->second;
+            target->value = value;
+            itemList.detach(target);
+        }
+        itemSet[key] = target;
+        itemList.append(target);
     }
 };
 
