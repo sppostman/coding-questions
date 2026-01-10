@@ -1,46 +1,48 @@
 class Solution {
+    static const int dirs = 4;
+    static constexpr int di[dirs] = { 0, 0, 1, -1 };
+    static constexpr int dj[dirs] = { 1, -1, 0, 0 };
+
+    static bool isSafe(int i, int j, int n, int m){
+        return i>=0 && j>=0 && i<n && j<m;
+    }
+
 public:
-    int orangesRotting(vector<vector<int>> &given) {
-        int n=given.size();
-        int m=given[0].size();
-        
-        vector<vector<int>> grid = given;
+    int orangesRotting(vector<vector<int>>& grid) {
+        vector<vector<int>> oranges = grid;
+        int n = grid.size(), m = grid[0].size();
+
+        int fresh = 0;
         queue<pair<int,int>> rotten;
 
-        int fresh=0;
-        for(int i=0; i<n; i++)
+        for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                if(grid[i][j] == 2)
-                    rotten.push({i,j});
-                else if(grid[i][j] == 1)
+                if(oranges[i][j] == 1)
                     fresh++;
+                else if(oranges[i][j] == 2)
+                    rotten.push({ i, j });
             }
+        }
 
-        int dI[] = {-1, 1, 0, 0};
-        int dJ[] = {0, 0, -1, 1};
-
-        int time=0;
-        while(fresh && rotten.size()){
-            time++;
-            int remainingAtLevel = rotten.size();
-            while(fresh && remainingAtLevel--){
-                pair<int, int> orange = rotten.front();
+        int mins = 0;
+        while((!rotten.empty()) && fresh>0){
+            mins++;
+            int active = rotten.size();
+            while(active--){
+                auto [i, j] = rotten.front();
                 rotten.pop();
-                for(int d=0; d<4; d++){
-                    int nextI = dI[d] + orange.first;
-                    int nextJ = dJ[d] + orange.second;
 
-                    if(
-                        nextI > -1 && nextI <n && nextJ > -1 && nextJ < m
-                        && grid[nextI][nextJ]==1
-                    ){
-                        grid[nextI][nextJ] = 2;
+                for(int d=0; d<dirs; d++){
+                    int nxtI = i+di[d], nxtJ = j+dj[d];
+                    if(isSafe(nxtI, nxtJ, n, m) && oranges[nxtI][nxtJ] == 1){
+                        oranges[nxtI][nxtJ] = 2;
+                        rotten.push({ nxtI, nxtJ });
                         fresh--;
-                        rotten.push({nextI, nextJ});
                     }
                 }
             }
         }
-        return fresh ? -1 : time;
+
+        return fresh > 0 ? -1 : mins;  
     }
 };
